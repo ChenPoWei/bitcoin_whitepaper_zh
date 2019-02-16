@@ -90,21 +90,21 @@ To compensate for increasing hardware speed and varying interest in running node
 
 The steps to run the network are as follows:
 
-> 1. New transactions are broadcast to all nodes.
-> 2. Each node collects new transactions into a block.
-> 3. Each node works on finding a difficult proof-of-work for its block.
-> 4. When a node finds a proof-of-work, it broadcasts the block to all nodes.
-> 5. Nodes accept the block only if all transactions in it are valid and not already spent.
-> 6. Nodes express their acceptance of the block by working on creating the next block in the chain, using the hash of the accepted block as the previous hash.
+	1. New transactions are broadcast to all nodes.
+	2. Each node collects new transactions into a block.
+	3. Each node works on finding a difficult proof-of-work for its block.
+	4. When a node finds a proof-of-work, it broadcasts the block to all nodes.
+	5. Nodes accept the block only if all transactions in it are valid and not already spent.
+	6. Nodes express their acceptance of the block by working on creating the next block in the chain, using the hash of the accepted block as the previous hash.
 
 執行網路的步驟如下：
 
-> 1. 所有新的交易向所有節點廣播；
-> 2. 每個節點將新交易打包到一個區塊；
-> 3. 每個節點開始為此區塊找一個具備難度的工作量證明；
-> 4. 當某個區塊找到其工作量證明，它就要將此區塊廣播給所有節點；
-> 5. 眾多其他節點當且只當以下條件滿足才會接受這個區塊：其中所有的交易都是有效的，且未被雙重支付；
-> 6. 眾多節點向網路表示自己接受這個區塊的方法是，在建立下一個區塊的時候，把被接受區塊的雜湊當作新區塊之前的雜湊。
+	1. 所有新的交易向所有節點廣播；
+	2. 每個節點將新交易打包到一個區塊；
+	3. 每個節點開始為此區塊找一個具備難度的工作量證明；
+	4. 當某個區塊找到其工作量證明，它就要將此區塊廣播給所有節點；
+	5. 眾多其他節點當且只當以下條件滿足才會接受這個區塊：其中所有的交易都是有效的，且未被雙重支付；
+	6. 眾多節點向網路表示自己接受這個區塊的方法是，在建立下一個區塊的時候，把被接受區塊的雜湊當作新區塊之前的雜湊。
 
 -----
 
