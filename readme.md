@@ -163,7 +163,7 @@ We consider the scenario of an attacker trying to generate an alternate chain fa
 
 The race between the honest chain and an attacker chain can be characterized as a Binomial Random Walk. The success event is the honest chain being extended by one block, increasing its lead by +1, and the failure event is the attacker's chain being extended by one block, reducing the gap by -1.
 
-誠實鏈和攻擊者之間的競爭可以用二項式隨機漫步來描述。成功事件是誠實鏈剛剛被添加了一個新的區塊，使得它的優勢增加了 $1$；而失敗事件是攻擊者的鏈剛剛被增加了一個新的區塊，使得誠實鏈的優勢減少了 $1$。
+誠實鏈和攻擊者之間的競爭可以用二項式隨機漫步來描述。成功事件是誠實鏈剛剛被添加了一個新的區塊，使得它的優勢增加了 '1'；而失敗事件是攻擊者的鏈剛剛被增加了一個新的區塊，使得誠實鏈的優勢減少了 '1'。
 
 The probability of an attacker catching up from a given deficit is analogous to a Gambler's Ruin problem. Suppose a gambler with unlimited credit starts at a deficit and plays potentially an infinite number of trials to try to reach breakeven. We can calculate the probability he ever reaches breakeven, or that an attacker ever catches up with the honest chain, as follows[^8]:
 
@@ -171,13 +171,13 @@ The probability of an attacker catching up from a given deficit is analogous to 
 
 p = 誠實節點找到下一個區塊的概率.   
 q = 攻擊者找到下一個區塊的概率.   
-q <sub>z</sub> = 攻擊者落後 $z$ 個區塊卻依然能夠趕上的概率.   
+q <sub>z</sub> = 攻擊者落後 'z' 個區塊卻依然能夠趕上的概率.   
 
 ![](images/eq1.png).   
 
-Given our assumption that $p \gt q​$, the probability drops exponentially as the number of blocks the attacker has to catch up with increases. With the odds against him, if he doesn't make a lucky lunge forward early on, his chances become vanishingly small as he falls further behind.
+Given our assumption that 'p > q​', the probability drops exponentially as the number of blocks the attacker has to catch up with increases. With the odds against him, if he doesn't make a lucky lunge forward early on, his chances become vanishingly small as he falls further behind.
 
-既然我們已經假定 $p > q$, 既然攻擊者需要趕超的區塊數量越來越多，那麼其成功概率就會指數級下降。於贏面不利時，如果攻擊者沒有在起初就能幸運地做一個前移步刺，那麼他的勝率將在他進一步落後的同時消弭殆盡。
+既然我們已經假定 'p > q', 既然攻擊者需要趕超的區塊數量越來越多，那麼其成功概率就會指數級下降。於贏面不利時，如果攻擊者沒有在起初就能幸運地做一個前移步刺，那麼他的勝率將在他進一步落後的同時消弭殆盡。
 
 We now consider how long the recipient of a new transaction needs to wait before being sufficiently certain the sender can't change the transaction. We assume the sender is an attacker who wants to make the recipient believe he paid him for a while, then switch it to pay back to himself after some time has passed. The receiver will be alerted when that happens, but the sender hopes it will be too late.
 
@@ -187,9 +187,9 @@ The receiver generates a new key pair and gives the public key to the sender sho
 
 收款人生成了一對新的公私鑰，而後在簽署之前不久將公鑰告知發款人。這樣可以防止一種情形：發款人提前通過連續運算去準備一條鏈上的區塊，並且只要有足夠的運氣就會足夠領先，直到那時再執行交易。一旦款項已被髮出，那個不誠實的發款人開始祕密地在另一條平行鏈上開工，試圖在其中加入一個反向版本的交易。
 
-The recipient waits until the transaction has been added to a block and $z$ blocks have been linked after it. He doesn't know the exact amount of progress the attacker has made, but assuming the honest blocks took the average expected time per block, the attacker's potential progress will be a Poisson distribution with expected value:
+The recipient waits until the transaction has been added to a block and 'z' blocks have been linked after it. He doesn't know the exact amount of progress the attacker has made, but assuming the honest blocks took the average expected time per block, the attacker's potential progress will be a Poisson distribution with expected value:
 
-收款人等到此筆交易被打包進區塊，並已經有 $z$ 個區塊隨後被加入。他並不知道攻擊者的工作進展究竟如何，但是可以假定誠實區塊在每個區塊生成過程中耗費的平均時間；攻擊者的潛在進展符合泊松分佈，其期望值為：
+收款人等到此筆交易被打包進區塊，並已經有 'z' 個區塊隨後被加入。他並不知道攻擊者的工作進展究竟如何，但是可以假定誠實區塊在每個區塊生成過程中耗費的平均時間；攻擊者的潛在進展符合泊松分佈，其期望值為：
 
 ![](images/eq2.png).   
 
@@ -228,9 +228,9 @@ double AttackerSuccessProbability(double q, int z)
 }
 ```
 
-Running some results, we can see the probability drop off exponentially with $z$.
+Running some results, we can see the probability drop off exponentially with 'z'.
 
-獲取部分結果，我們可以看到概率隨著 $z$ 的增加指數級下降：
+獲取部分結果，我們可以看到概率隨著 'z' 的增加指數級下降：
 
 ```
    q=0.1
