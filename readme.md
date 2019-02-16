@@ -17,9 +17,13 @@ Commerce on the Internet has come to rely almost exclusively on financial instit
 
 網際網路商業幾乎完全依賴金融機構作為可信第三方去處理電子支付。雖然針對大多數交易來說，這個系統還算不錯，但，它仍然被基於信任的模型所固有的缺陷所拖累。完全不可逆轉的交易實際上並不可能，因為金融機構不能避免仲裁爭議。仲裁成本增加了交易成本，進而限制了最小可能交易的規模，且乾脆阻止了很多小額支付交易。除此之外，還有更大的成本：系統無法為那些不可逆的服務提供不可逆的支付。逆轉的可能性，造成了對於信任的需求無所不在。商家必須提防著他們的顧客，麻煩顧客提供若非如此（如若信任）就並不必要的更多資訊。一定比例的欺詐，被認為是不可避免的。這些成本和支付不確定性，雖然在人與人之間直接使用物理貨幣支付的時候是可以避免的；但，沒有任何一個機制能在雙方在其中一方不被信任的情況下通過溝通渠道進行支付。
 
+-----
+
 What is needed is an electronic payment system based on cryptographic proof instead of trust, allowing any two willing parties to transact directly with each other without the need for a trusted third party. Transactions that are computationally impractical to reverse would protect sellers from fraud, and routine escrow mechanisms could easily be implemented to protect buyers. In this paper, we propose a solution to the double-spending problem using a peer-to-peer distributed timestamp server to generate computational proof of the chronological order of transactions. The system is secure as long as honest nodes collectively control more CPU power than any cooperating group of attacker nodes.
 
 我們真正需要的是一種基於加密證明而非基於信任的電子支付系統，允許任意雙方在不需要信任第三方的情況下直接交易。運算能力保障的不可逆轉交易能幫助賣家不被欺詐，而保護買家的日常擔保機制也很容易實現。在本論文中，我們將提出一種針對雙重支付的解決方案，使用點對點的、分散式的時間戳伺服器去生成基於運算能力的證明，按照時間順序記錄每條交易。此係統是安全的，只要誠實節點總體上相對於相互合作的攻擊者掌握更多的 CPU 運算能力。
+
+-----
 
 ## 2. 交易 (Transactions)
 
@@ -29,13 +33,19 @@ We define an electronic coin as a chain of digital signatures. Each owner transf
 
 ![](images/transactions.png)
 
+-----
+
 The problem of course is the payee can't verify that one of the owners did not double-spend the coin. A common solution is to introduce a trusted central authority, or mint, that checks every transaction for double spending. After each transaction, the coin must be returned to the mint to issue a new coin, and only coins issued directly from the mint are trusted not to be double-spent. The problem with this solution is that the fate of the entire money system depends on the company running the mint, with every transaction having to go through them, just like a bank.
 
 這個路徑的問題在於收款人無法驗證曾經的所有者之中沒有人雙重支付過。常見的解決方案是引入一個可信的中心化權威方，或稱“鑄幣廠”，讓它去檢查每一筆交易是否存在雙重支付。每一次發生交易之後，硬幣必須返回到鑄幣廠，鑄幣廠再發行一枚新的硬幣。進而，只有鑄幣廠直接發行的硬幣才是可信的、未被雙重支付過的。這個解決方案的問題在於，整個貨幣系統的命運被拴在運營鑄幣廠的那個公司（就好像銀行那樣）身上，每一筆交易必須通過它。
 
+-----
+
 We need a way for the payee to know that the previous owners did not sign any earlier transactions. For our purposes, the earliest transaction is the one that counts, so we don't care about later attempts to double-spend. The only way to confirm the absence of a transaction is to be aware of all transactions. In the mint based model, the mint was aware of all transactions and decided which arrived first. To accomplish this without a trusted party, transactions must be publicly announced[^1], and we need a system for participants to agree on a single history of the order in which they were received. The payee needs proof that at the time of each transaction, the majority of nodes agreed it was the first received.
 
 我們需要一種方式，可以讓收款人確認之前的所有者並沒有在任何之前的交易上簽名。就我們的目的而言，只有最早的交易是算數的，所以，我們並不關心其後的雙重支付企圖。確認一筆交易不存在的唯一方法是獲悉所有的交易。在鑄幣廠模型之中，鑄幣廠已然知悉所有的交易，並且能夠確認這些交易的順序。為了能在沒有“被信任的一方”參與的情況下完成以上任務，交易記錄必須被公開宣佈[^1]，進而我們需要一個系統能讓參與者們認同它們所接收到的同一個唯一的交易歷史。收款人需要證明在每筆交易發生之時，大多數節點能夠認同它是第一個被接收的。
+
+-----
 
 ## 3. 時間戳伺服器 (Timestamp Server)
 
@@ -45,11 +55,15 @@ The solution we propose begins with a timestamp server. A timestamp server works
 
 ![](images/timestamp-server.png)
 
+-----
+
 ## 4. 工作量證明 (Proof-of-Work)
 
 To implement a distributed timestamp server on a peer-to-peer basis, we will need to use a proof-of-work system similar to Adam Back's Hashcash[^6], rather than newspaper or Usenet posts. The proof-of-work involves scanning for a value that when hashed, such as with SHA-256, the hash begins with a number of zero bits. The average work required is exponential in the number of zero bits required and can be verified by executing a single hash.
 
 為了實現一個基於點對點的分散式時間戳伺服器，我們需要使用類似亞當·伯克的雜湊現金[^6]那樣的一個工作量證明系統，而不是報紙或者新聞組帖子那樣的東西。所謂的工作量證明，就是去尋找一個數值；這個數值要滿足以下條件：為它提取雜湊數值之後 —— 例如使用 SHA-256 計算雜湊數值 —— 這個雜湊數值必須以一定數量的 0 開頭。每增加一個 0 的要求，將使得工作量指數級增加，並且，這個工作量的驗證卻只需通過計算一個雜湊。
+
+-----
 
 For our timestamp network, we implement the proof-of-work by incrementing a nonce in the block until a value is found that gives the block's hash the required zero bits. Once the CPU effort has been expended to make it satisfy the proof-of-work, the block cannot be changed without redoing the work. As later blocks are chained after it, the work to change the block would include redoing all the blocks after it.
 
@@ -57,13 +71,19 @@ For our timestamp network, we implement the proof-of-work by incrementing a nonc
 
 ![](images/proof-of-work.png)
 
+-----
+
 The proof-of-work also solves the problem of determining representation in majority decision making. If the majority were based on one-IP-address-one-vote, it could be subverted by anyone able to allocate many IPs. Proof-of-work is essentially one-CPU-one-vote. The majority decision is represented by the longest chain, which has the greatest proof-of-work effort invested in it. If a majority of CPU power is controlled by honest nodes, the honest chain will grow the fastest and outpace any competing chains. To modify a past block, an attacker would have to redo the proof-of-work of the block and all blocks after it and then catch up with and surpass the work of the honest nodes. We will show later that the probability of a slower attacker catching up diminishes exponentially as subsequent blocks are added.
 
 工作量證明同時解決了如何決定誰能代表大多數做決定的問題。如果所謂的“大多數”是基於“一個IP地址一票”的方式決定的話，那麼任何一個可以搞定很多 IP 地址的人就可以被認為是“大多數”。工作量證明本質上來看，是“一個CPU一票”。所謂的“大多數決定”是由最長鏈所代表的，因為被投入最多工作的鏈就是它。如果大多數 CPU 運算能力被誠實的節點所控制，那麼誠實鏈成長最為迅速，其速度會遠超其他競爭鏈。為了更改一個已經產生的區塊，攻擊者將不得不重新完成那個區塊以及所有其後區塊的的工作量證明，而後還要追上並超過誠實節點的工作。後文展示為什麼一個被拖延了的攻擊者能夠追上的可能性將隨著區塊的不斷增加而指數級降低。
 
+-----
+
 To compensate for increasing hardware speed and varying interest in running nodes over time, the proof-of-work difficulty is determined by a moving average targeting an average number of blocks per hour. If they're generated too fast, the difficulty increases.
 
 為了應對硬體運算能力綜合的不斷增加，以及隨著時間推進可能產生的節點參與數量變化，工作量證明難度由此決定：基於平均每小時產生的區塊數量的一個移動平均值。如果區塊生成得過快，那麼難度將會增加。
+
+-----
 
 ## 5. 網路 (Network)
 
@@ -85,13 +105,19 @@ The steps to run the network are as follows:
 > 5. 眾多其他節點當且只當以下條件滿足才會接受這個區塊：其中所有的交易都是有效的，且未被雙重支付；
 > 6. 眾多節點向網路表示自己接受這個區塊的方法是，在建立下一個區塊的時候，把被接受區塊的雜湊當作新區塊之前的雜湊。
 
+-----
+
 Nodes always consider the longest chain to be the correct one and will keep working on extending it. If two nodes broadcast different versions of the next block simultaneously, some nodes may receive one or the other first. In that case, they work on the first one they received, but save the other branch in case it becomes longer. The tie will be broken when the next proof-of-work is found and one branch becomes longer; the nodes that were working on the other branch will then switch to the longer one.
 
 節點始終認為最長鏈是正確的那個，且會不斷向其新增新資料。若是有兩個節點同時向網路廣播了兩個不同版本的“下一個區塊”，有些節點會先接收到其中一個，而另外一些節點會先接收到另外一個。這種情況下，節點將在它們先接收到的那個區塊上繼續工作，但也會把另外一個分支儲存下來，以防後者成為最長鏈。當下一個工作量證明被找到，而其中的一個分支成為更長的鏈之後，這個暫時的分歧會被打消，在另外一個分支上工作的節點們會切換到更長的鏈上。
 
+-----
+
 New transaction broadcasts do not necessarily need to reach all nodes. As long as they reach many nodes, they will get into a block before long. Block broadcasts are also tolerant of dropped messages. If a node does not receive a block, it will request it when it receives the next block and realizes it missed one.
 
 新的交易不見得一定要廣播到達所有的節點。只要到達足夠多的節點，那麼沒多久這些交易就會被打包進一個區塊。區塊廣播也容許一些訊息被丟棄。如果一個節點並未接收到某個區塊，那麼這個節點會在它接收到下一個區塊的時候意識到自己錯失了之前的區塊，因此會發出補充那個遺失區塊的請求。
+
+-----
 
 ## 6. 獎勵 (Incentive)
 
@@ -99,13 +125,19 @@ By convention, the first transaction in a block is a special transaction that st
 
 按照約定，每個區塊的第一筆交易是一個特殊的交易，它會生成一枚新的硬幣，所屬權是這個區塊的生成者。這麼做，使得節點支援網路有所獎勵，也提供了一種將硬幣發行到流通之中的方式 —— 在這個系統中，反正也沒有一箇中心化的權威方去發行那些硬幣。如此這般穩定地增加一定數量的新硬幣進入流通，就好像是黃金開採者不斷耗用他們的資源往流通之中增加黃金一樣。在我們的系統中，被耗用的資源是 CPU 工作時間和它們所用的電力。
 
+-----
+
 The incentive can also be funded with transaction fees. If the output value of a transaction is less than its input value, the difference is a transaction fee that is added to the incentive value of the block containing the transaction. Once a predetermined number of coins have entered circulation, the incentive can transition entirely to transaction fees and be completely inflation free.
 
 獎勵還可以來自交易費用。如果一筆交易的輸出值小於它的輸入值，那麼其中的差額就是交易費；而該交易費就是用來獎勵節點把該交易打包進此區塊的。一旦既定數量的硬幣已經進入流通，那麼獎勵將全面交由交易手續費來完成，且絕對不會有通貨膨脹。
 
+-----
+
 The incentive may help encourage nodes to stay honest. If a greedy attacker is able to assemble more CPU power than all the honest nodes, he would have to choose between using it to defraud people by stealing back his payments, or using it to generate new coins. He ought to find it more profitable to play by the rules, such rules that favour him with more new coins than everyone else combined, than to undermine the system and the validity of his own wealth.
 
 獎勵機制也可能會鼓勵節點保持誠實。如果一個貪婪的攻擊者能夠網羅比所有誠實節點都更多的 CPU 運算能力，他必須做出一個選擇：是用這些運算能力通過把自己花出去的錢偷回來去欺騙別人呢？還是用這些運算能力去生成新的硬幣？他應該能夠發現按照規則行事是更划算的，當前規則使得他能夠獲得比所有其他人加起來都更多的硬幣，這顯然比暗中摧毀系統並使自己的財富化為虛無更划算。
+
+-----
 
 ## 7. 回收硬碟空間 (Reclaiming Disk Space)
 
@@ -115,9 +147,13 @@ Once the latest transaction in a coin is buried under enough blocks, the spent t
 
 ![](images/reclaiming-disk-space.png)
 
+-----
+
 A block header with no transactions would be about 80 bytes. If we suppose blocks are generated every 10 minutes, 80 bytes * 6 * 24 * 365 = 4.2MB per year. With computer systems typically selling with 2GB of RAM as of 2008, and Moore's Law predicting current growth of 1.2GB per year, storage should not be a problem even if the block headers must be kept in memory.
 
 一個沒有任何交易記錄的區塊頭大約是 80 個位元組。假設每十分鐘產生一個區塊，80 位元組乘以 6 乘以 24 乘以 365，等於每年 4.2M。截止 2008 年，大多數在售的計算機配有 2GB 記憶體，而按照摩爾定律的預測，每年會增加 1.2 GB，即便是區塊頭必須儲存在記憶體之中也不會是什麼問題。
+
+-----
 
 ## 8. 簡化版支付確認 (Simplified Payment Verification)
 
@@ -127,9 +163,13 @@ It is possible to verify payments without running a full network node. A user on
 
 ![](images/simplified-payment-verification.png)
 
+-----
+
 As such, the verification is reliable as long as honest nodes control the network, but is more vulnerable if the network is overpowered by an attacker. While network nodes can verify transactions for themselves, the simplified method can be fooled by an attacker's fabricated transactions for as long as the attacker can continue to overpower the network. One strategy to protect against this would be to accept alerts from network nodes when they detect an invalid block, prompting the user's software to download the full block and alerted transactions to confirm the inconsistency. Businesses that receive frequent payments will probably still want to run their own nodes for more independent security and quicker verification.
 
 只要誠實節點依然在掌控網路，如此這般，驗證即為可靠的。然而，如果網路被攻擊者所控制的時候，驗證就沒那麼可靠了。儘管網路節點可以自己驗證交易記錄，但是，只要攻擊者能夠繼續控制網路的話，那麼簡化版驗證方式可能會被攻擊者偽造的交易記錄所欺騙。應對策略之一是，客戶端軟體要接受來自網路節點的警告。當網路節點發現無效區塊的時候，即發出警報，在使用者的軟體上彈出通知，告知使用者下載完整區塊，警告使用者確認交易一致性。那些有高頻收付發生的商家應該仍然希望執行屬於自己的完整節點，以此保證更獨立的安全性和更快的交易確認。
+
+-----
 
 ## 9. 價值的組合與分割 (Combining and Splitting Value)
 
@@ -139,9 +179,13 @@ Although it would be possible to handle coins individually, it would be unwieldy
 
 ![](images/combining-splitting-value.png)
 
+-----
+
 It should be noted that fan-out, where a transaction depends on several transactions, and those transactions depend on many more, is not a problem here. There is never the need to extract a complete standalone copy of a transaction's history.
 
 值得注意的是，“扇出”在這裡並不是問題 —— 所謂“扇出”，就是指一筆交易依賴於數筆交易，且這些交易又依賴於更多筆交易。從來就沒有必要去提取任何一筆交易的完整獨立的歷史拷貝。
+
+-----
 
 ## 10. 隱私 (Privacy)
 
@@ -151,9 +195,13 @@ The traditional banking model achieves a level of privacy by limiting access to 
 
 ![](images/privacy.png)
 
+-----
+
 As an additional firewall, a new key pair should be used for each transaction to keep them from being linked to a common owner. Some linking is still unavoidable with multi-input transactions, which necessarily reveal that their inputs were owned by the same owner. The risk is that if the owner of a key is revealed, linking could reveal other transactions that belonged to the same owner.
 
 還有另外一層防火牆。交易者應該針對每一筆交易啟用一對新的公私鑰，以便他人無法將這些交易追溯到同一個所有者身上。有些多輸入的交易依然難免被追溯，因為那些輸入必然會被識別出來自於同一個所有者。危險在於，如果一個公鑰的所有者被曝光之後，與之相關的所有其他交易都會被曝光。
+
+-----
 
 ## 11. 計算 (Calculations)
 
@@ -161,9 +209,13 @@ We consider the scenario of an attacker trying to generate an alternate chain fa
 
 假設一個場景，某個攻擊者正在試圖生成一個比誠實鏈更快的替代鏈。就算他成功了，也不會使當前系統置於模稜兩可的尷尬境地，即，他不可能憑空製造出價值，也無法獲取從未屬於他的錢。網路節點不會把一筆無效交易當作支付，而誠實節點也永遠不會接受一個包含這種支付的區塊。攻擊者最多隻能修改屬於他自己的交易，進而試圖取回他已經花出去的錢。
 
+-----
+
 The race between the honest chain and an attacker chain can be characterized as a Binomial Random Walk. The success event is the honest chain being extended by one block, increasing its lead by +1, and the failure event is the attacker's chain being extended by one block, reducing the gap by -1.
 
 誠實鏈和攻擊者之間的競爭可以用二項式隨機漫步來描述。成功事件是誠實鏈剛剛被添加了一個新的區塊，使得它的優勢增加了 '1'；而失敗事件是攻擊者的鏈剛剛被增加了一個新的區塊，使得誠實鏈的優勢減少了 '1'。
+
+-----
 
 The probability of an attacker catching up from a given deficit is analogous to a Gambler's Ruin problem. Suppose a gambler with unlimited credit starts at a deficit and plays potentially an infinite number of trials to try to reach breakeven. We can calculate the probability he ever reaches breakeven, or that an attacker ever catches up with the honest chain, as follows[^8]:
 
@@ -175,23 +227,33 @@ q <sub>z</sub> = 攻擊者落後 'z' 個區塊卻依然能夠趕上的機率.
 
 ![](images/eq1.png).   
 
+-----
+
 Given our assumption that 'p > q​', the probability drops exponentially as the number of blocks the attacker has to catch up with increases. With the odds against him, if he doesn't make a lucky lunge forward early on, his chances become vanishingly small as he falls further behind.
 
 既然我們已經假定 'p > q', 既然攻擊者需要趕超的區塊數量越來越多，那麼其成功機率就會指數級下降。於贏面不利時，如果攻擊者沒有在起初就能幸運地做一個前移步刺，那麼他的勝率將在他進一步落後的同時消弭殆盡。
+
+-----
 
 We now consider how long the recipient of a new transaction needs to wait before being sufficiently certain the sender can't change the transaction. We assume the sender is an attacker who wants to make the recipient believe he paid him for a while, then switch it to pay back to himself after some time has passed. The receiver will be alerted when that happens, but the sender hopes it will be too late.
 
 現在考慮一下一筆新交易的收款人需要等多久才能充分確定發款人不能更改這筆交易。我們假定發款人是個攻擊者，妄圖讓收款人在一段時間裡相信他已經支付對付款項，隨後將這筆錢再轉回給自己。發生這種情況時，收款人當然會收到警告，但發款人希望那時木已成舟。
 
+-----
+
 The receiver generates a new key pair and gives the public key to the sender shortly before signing. This prevents the sender from preparing a chain of blocks ahead of time by working on it continuously until he is lucky enough to get far enough ahead, then executing the transaction at that moment. Once the transaction is sent, the dishonest sender starts working in secret on a parallel chain containing an alternate version of his transaction.
 
 收款人生成了一對新的公私鑰，而後在簽署之前不久將公鑰告知發款人。這樣可以防止一種情形：發款人提前通過連續運算去準備一條鏈上的區塊，並且只要有足夠的運氣就會足夠領先，直到那時再執行交易。一旦款項已被髮出，那個不誠實的發款人開始祕密地在另一條平行鏈上開工，試圖在其中加入一個反向版本的交易。
+
+-----
 
 The recipient waits until the transaction has been added to a block and 'z' blocks have been linked after it. He doesn't know the exact amount of progress the attacker has made, but assuming the honest blocks took the average expected time per block, the attacker's potential progress will be a Poisson distribution with expected value:
 
 收款人等到此筆交易被打包進區塊，並已經有 'z' 個區塊隨後被加入。他並不知道攻擊者的工作進展究竟如何，但是可以假定誠實區塊在每個區塊生成過程中耗費的平均時間；攻擊者的潛在進展符合泊松分佈，其期望值為：
 
 ![](images/eq2.png).   
+
+-----
 
 To get the probability the attacker could still catch up now, we multiply the Poisson density for each amount of progress he could have made by the probability he could catch up from that point:
 
@@ -205,9 +267,13 @@ Rearranging to avoid summing the infinite tail of the distribution...
 
 ![](images/eq4.png).   
 
+-----
+
 Converting to C code...
 
 轉換為 C 語言程式……
+
+-----
 
 ```c
 #include <math.h>
@@ -231,6 +297,7 @@ double AttackerSuccessProbability(double q, int z)
 Running some results, we can see the probability drop off exponentially with 'z'.
 
 獲取部分結果，我們可以看到機率隨著 'z' 的增加指數級下降：
+
 
 ```
    q=0.1
