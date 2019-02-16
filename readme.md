@@ -6,7 +6,7 @@
 
 > **Abstract.** A purely peer-to-peer version of electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution. Digital signatures provide part of the solution, but the main benefits are lost if a trusted third party is still required to prevent double-spending. We propose a solution to the double-spending problem using a peer-to-peer network. The network timestamps transactions by hashing them into an ongoing chain of hash-based proof-of-work, forming a record that cannot be changed without redoing the proof-of-work. The longest chain not only serves as proof of the sequence of events witnessed, but proof that it came from the largest pool of CPU power. As long as a majority of CPU power is controlled by nodes that are not cooperating to attack the network, they'll generate the longest chain and outpace attackers. The network itself requires minimal structure. Messages are broadcast on a best effort basis, and nodes can leave and rejoin the network at will, accepting the longest proof-of-work chain as proof of what happened while they were gone. 
 >
-> **概要**：一個純粹的點對點版本的電子現金系統，將允許線上支付直接從一方傳送到另一方，而無需通過金融機構。數字簽名雖然提供了部分解決方案，但，若是仍然需要被信任的第三方來防止雙重支出的話，那麼電子支付的主要優勢就被抵消了。我們提出一個方案，使用點對點網路去解決雙重支出問題。點對點網路將為每筆交易標記時間戳，方法是：把交易的雜湊資料錄入一個不斷延展的、以雜湊為基礎的工作證明鏈上，形成一個如非完全重做就不可能改變的記錄。最長鏈，一方面用來證明已被見證的事件及其順序，與此同時，也用來證明它來自於最大的 CPU 算力池。只要絕大多數 CPU 算力被良性節點控制 —— 即，它們不與那些嘗試攻擊網路的節點合作 —— 那麼，良性節點將會生成最長鏈，並且在速度上超過攻擊者。這個網路本身需要最小化的結構。資訊將以最大努力為基本去傳播，節點來去自由；但，加入之時總是需要接受最長的工作證明鏈作為它們未參與期間所發生之一切的證明。
+> **概要**：一個純粹的點對點版本的電子現金系統，將允許線上支付直接從一方傳送到另一方，而無需通過金融機構。數字簽名雖然提供了部分解決方案，但，若是仍然需要被信任的第三方來防止雙重支出的話，那麼電子支付的主要優勢就被抵消了。我們提出一個方案，使用點對點網路去解決雙重支出問題。點對點網路將為每筆交易標記時間戳，方法是：把交易的雜湊資料錄入一個不斷延展的、以雜湊為基礎的工作證明鏈上，形成一個如非完全重做就不可能改變的記錄。最長鏈，一方面用來證明已被見證的事件及其順序，與此同時，也用來證明它來自於最大的 CPU 運算能力池。只要絕大多數 CPU 運算能力被良性節點控制 —— 即，它們不與那些嘗試攻擊網路的節點合作 —— 那麼，良性節點將會生成最長鏈，並且在速度上超過攻擊者。這個網路本身需要最小化的結構。資訊將以最大努力為基本去傳播，節點來去自由；但，加入之時總是需要接受最長的工作證明鏈作為它們未參與期間所發生之一切的證明。
 
 -----
 
@@ -19,7 +19,7 @@ Commerce on the Internet has come to rely almost exclusively on financial instit
 
 What is needed is an electronic payment system based on cryptographic proof instead of trust, allowing any two willing parties to transact directly with each other without the need for a trusted third party. Transactions that are computationally impractical to reverse would protect sellers from fraud, and routine escrow mechanisms could easily be implemented to protect buyers. In this paper, we propose a solution to the double-spending problem using a peer-to-peer distributed timestamp server to generate computational proof of the chronological order of transactions. The system is secure as long as honest nodes collectively control more CPU power than any cooperating group of attacker nodes.
 
-我們真正需要的是一種基於加密證明而非基於信任的電子支付系統，允許任意雙方在不需要信任第三方的情況下直接交易。算力保障的不可逆轉交易能幫助賣家不被欺詐，而保護買家的日常擔保機制也很容易實現。在本論文中，我們將提出一種針對雙重支出的解決方案，使用點對點的、分散式的時間戳伺服器去生成基於算力的證明，按照時間順序記錄每條交易。此係統是安全的，只要誠實節點總體上相對於相互合作的攻擊者掌握更多的 CPU 算力。
+我們真正需要的是一種基於加密證明而非基於信任的電子支付系統，允許任意雙方在不需要信任第三方的情況下直接交易。運算能力保障的不可逆轉交易能幫助賣家不被欺詐，而保護買家的日常擔保機制也很容易實現。在本論文中，我們將提出一種針對雙重支出的解決方案，使用點對點的、分散式的時間戳伺服器去生成基於運算能力的證明，按照時間順序記錄每條交易。此係統是安全的，只要誠實節點總體上相對於相互合作的攻擊者掌握更多的 CPU 運算能力。
 
 ## 2. 交易 (Transactions)
 
@@ -53,17 +53,17 @@ To implement a distributed timestamp server on a peer-to-peer basis, we will nee
 
 For our timestamp network, we implement the proof-of-work by incrementing a nonce in the block until a value is found that gives the block's hash the required zero bits. Once the CPU effort has been expended to make it satisfy the proof-of-work, the block cannot be changed without redoing the work. As later blocks are chained after it, the work to change the block would include redoing all the blocks after it.
 
-在我們的時間戳網路中，我們是這樣實現工作證明的：不斷在區塊之中增加一個隨機數（Nonce），直到一個滿足條件的數值被找到；這個條件就是，這個區塊的雜湊以指定數量的 0 開頭。一旦 CPU 的耗費算力所獲的的結果滿足工作證明，那麼這個區塊將不再能被更改，除非重新完成之前的所有工作量。隨著新的區塊不斷被新增進來，改變當前區塊即意味著說要重新完成所有其後區塊的工作。
+在我們的時間戳網路中，我們是這樣實現工作證明的：不斷在區塊之中增加一個隨機數（Nonce），直到一個滿足條件的數值被找到；這個條件就是，這個區塊的雜湊以指定數量的 0 開頭。一旦 CPU 的耗費運算能力所獲的的結果滿足工作證明，那麼這個區塊將不再能被更改，除非重新完成之前的所有工作量。隨著新的區塊不斷被新增進來，改變當前區塊即意味著說要重新完成所有其後區塊的工作。
 
 ![](images/proof-of-work.png)
 
 The proof-of-work also solves the problem of determining representation in majority decision making. If the majority were based on one-IP-address-one-vote, it could be subverted by anyone able to allocate many IPs. Proof-of-work is essentially one-CPU-one-vote. The majority decision is represented by the longest chain, which has the greatest proof-of-work effort invested in it. If a majority of CPU power is controlled by honest nodes, the honest chain will grow the fastest and outpace any competing chains. To modify a past block, an attacker would have to redo the proof-of-work of the block and all blocks after it and then catch up with and surpass the work of the honest nodes. We will show later that the probability of a slower attacker catching up diminishes exponentially as subsequent blocks are added.
 
-工作證明同時解決了如何決定誰能代表大多數做決定的問題。如果所謂的“大多數”是基於“一個IP地址一票”的方式決定的話，那麼任何一個可以搞定很多 IP 地址的人就可以被認為是“大多數”。工作證明本質上來看，是“一個CPU一票”。所謂的“大多數決定”是由最長鏈所代表的，因為被投入最多工作的鏈就是它。如果大多數 CPU 算力被誠實的節點所控制，那麼誠實鏈成長最為迅速，其速度會遠超其他競爭鏈。為了更改一個已經產生的區塊，攻擊者將不得不重新完成那個區塊以及所有其後區塊的的工作證明，而後還要追上並超過誠實節點的工作。後文展示為什麼一個被拖延了的攻擊者能夠追上的可能性將隨著區塊的不斷增加而指數級降低。
+工作證明同時解決了如何決定誰能代表大多數做決定的問題。如果所謂的“大多數”是基於“一個IP地址一票”的方式決定的話，那麼任何一個可以搞定很多 IP 地址的人就可以被認為是“大多數”。工作證明本質上來看，是“一個CPU一票”。所謂的“大多數決定”是由最長鏈所代表的，因為被投入最多工作的鏈就是它。如果大多數 CPU 運算能力被誠實的節點所控制，那麼誠實鏈成長最為迅速，其速度會遠超其他競爭鏈。為了更改一個已經產生的區塊，攻擊者將不得不重新完成那個區塊以及所有其後區塊的的工作證明，而後還要追上並超過誠實節點的工作。後文展示為什麼一個被拖延了的攻擊者能夠追上的可能性將隨著區塊的不斷增加而指數級降低。
 
 To compensate for increasing hardware speed and varying interest in running nodes over time, the proof-of-work difficulty is determined by a moving average targeting an average number of blocks per hour. If they're generated too fast, the difficulty increases.
 
-為了應對硬體算力綜合的不斷增加，以及隨著時間推進可能產生的節點參與數量變化，工作證明難度由此決定：基於平均每小時產生的區塊數量的一個移動平均值。如果區塊生成得過快，那麼難度將會增加。
+為了應對硬體運算能力綜合的不斷增加，以及隨著時間推進可能產生的節點參與數量變化，工作證明難度由此決定：基於平均每小時產生的區塊數量的一個移動平均值。如果區塊生成得過快，那麼難度將會增加。
 
 ## 5. 網路 (Network)
 
@@ -105,7 +105,7 @@ The incentive can also be funded with transaction fees. If the output value of a
 
 The incentive may help encourage nodes to stay honest. If a greedy attacker is able to assemble more CPU power than all the honest nodes, he would have to choose between using it to defraud people by stealing back his payments, or using it to generate new coins. He ought to find it more profitable to play by the rules, such rules that favour him with more new coins than everyone else combined, than to undermine the system and the validity of his own wealth.
 
-獎勵機制也可能會鼓勵節點保持誠實。如果一個貪婪的攻擊者能夠網羅比所有誠實節點都更多的 CPU 算力，他必須做出一個選擇：是用這些算力通過把自己花出去的錢偷回來去欺騙別人呢？還是用這些算力去生成新的硬幣？他應該能夠發現按照規則行事是更划算的，當前規則使得他能夠獲得比所有其他人加起來都更多的硬幣，這顯然比暗中摧毀系統並使自己的財富化為虛無更划算。
+獎勵機制也可能會鼓勵節點保持誠實。如果一個貪婪的攻擊者能夠網羅比所有誠實節點都更多的 CPU 運算能力，他必須做出一個選擇：是用這些運算能力通過把自己花出去的錢偷回來去欺騙別人呢？還是用這些運算能力去生成新的硬幣？他應該能夠發現按照規則行事是更划算的，當前規則使得他能夠獲得比所有其他人加起來都更多的硬幣，這顯然比暗中摧毀系統並使自己的財富化為虛無更划算。
 
 ## 7. 回收硬碟空間 (Reclaiming Disk Space)
 
@@ -281,7 +281,7 @@ Solving for P less than 0.1%...
 
 We have proposed a system for electronic transactions without relying on trust. We started with the usual framework of coins made from digital signatures, which provides strong control of ownership, but is incomplete without a way to prevent double-spending. To solve this, we proposed a peer-to-peer network using proof-of-work to record a public history of transactions that quickly becomes computationally impractical for an attacker to change if honest nodes control a majority of CPU power. The network is robust in its unstructured simplicity. Nodes work all at once with little coordination. They do not need to be identified, since messages are not routed to any particular place and only need to be delivered on a best effort basis. Nodes can leave and rejoin the network at will, accepting the proof-of-work chain as proof of what happened while they were gone. They vote with their CPU power, expressing their acceptance of valid blocks by working on extending them and rejecting invalid blocks by refusing to work on them. Any needed rules and incentives can be enforced with this consensus mechanism.
 
-我們提出了一個不必依賴信任的電子交易系統；起點是一個普通的使用數字簽名的硬幣框架開始，雖然它提供了健壯的所有權控制，卻無法避免雙重支付。為了解決這個問題，我們提出一個使用工作證明機制的點對點網路去記錄一個公開的交易記錄歷史，只要誠實節點能夠控制大多數 CPU 算力，那麼攻擊者就僅從算力方面就不可能成功篡改系統。這個網路的健壯在於它的無結構的簡單。節點們可以在很少協同的情況下瞬間同時工作。它們甚至不需要被辨認，因為訊息的路徑並非取決於特定的終點；訊息只需要被以最大努力為基本去傳播即可。節點來去自由，重新加入時，只需要接受工作證明鏈，作為它們離線之時所發生之一切的證明。它們通過它們的 CPU 算力投票，通過不斷為鏈新增新的有效區塊、拒絕無效區塊，去表示它們對有效交易的接受與否。任何必要的規則和獎勵都可以通過這個共識機制來強制實施。
+我們提出了一個不必依賴信任的電子交易系統；起點是一個普通的使用數字簽名的硬幣框架開始，雖然它提供了健壯的所有權控制，卻無法避免雙重支付。為了解決這個問題，我們提出一個使用工作證明機制的點對點網路去記錄一個公開的交易記錄歷史，只要誠實節點能夠控制大多數 CPU 運算能力，那麼攻擊者就僅從運算能力方面就不可能成功篡改系統。這個網路的健壯在於它的無結構的簡單。節點們可以在很少協同的情況下瞬間同時工作。它們甚至不需要被辨認，因為訊息的路徑並非取決於特定的終點；訊息只需要被以最大努力為基本去傳播即可。節點來去自由，重新加入時，只需要接受工作證明鏈，作為它們離線之時所發生之一切的證明。它們通過它們的 CPU 運算能力投票，通過不斷為鏈新增新的有效區塊、拒絕無效區塊，去表示它們對有效交易的接受與否。任何必要的規則和獎勵都可以通過這個共識機制來強制實施。
 
 -----
 
