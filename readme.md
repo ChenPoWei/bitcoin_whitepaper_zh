@@ -89,7 +89,6 @@ To compensate for increasing hardware speed and varying interest in running node
 ## 5. 網路 (Network)
 
 The steps to run the network are as follows:
-
 	1. New transactions are broadcast to all nodes.
 	2. Each node collects new transactions into a block.
 	3. Each node works on finding a difficult proof-of-work for its block.
@@ -98,7 +97,6 @@ The steps to run the network are as follows:
 	6. Nodes express their acceptance of the block by working on creating the next block in the chain, using the hash of the accepted block as the previous hash.
 
 執行網路的步驟如下：
-
 	1. 所有新的交易向所有節點廣播；
 	2. 每個節點將新交易打包到一個區塊；
 	3. 每個節點開始為此區塊找一個具備難度的工作量證明；
