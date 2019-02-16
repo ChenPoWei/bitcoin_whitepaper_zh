@@ -6,7 +6,7 @@
 
 > **Abstract.** A purely peer-to-peer version of electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution. Digital signatures provide part of the solution, but the main benefits are lost if a trusted third party is still required to prevent double-spending. We propose a solution to the double-spending problem using a peer-to-peer network. The network timestamps transactions by hashing them into an ongoing chain of hash-based proof-of-work, forming a record that cannot be changed without redoing the proof-of-work. The longest chain not only serves as proof of the sequence of events witnessed, but proof that it came from the largest pool of CPU power. As long as a majority of CPU power is controlled by nodes that are not cooperating to attack the network, they'll generate the longest chain and outpace attackers. The network itself requires minimal structure. Messages are broadcast on a best effort basis, and nodes can leave and rejoin the network at will, accepting the longest proof-of-work chain as proof of what happened while they were gone. 
 >
-> **摘要**：一個純粹的點對點版本的電子現金系統，將允許線上支付直接從一方傳送到另一方，而無需通過金融機構。數字簽名雖然提供了部分解決方案，但，若是仍然需要被信任的第三方來防止雙重支付的話，那麼電子支付的主要優勢就被抵消了。我們提出一個方案，使用點對點網路去解決雙重支付問題。點對點網路將為每筆交易標記時間戳，方法是：把交易的雜湊資料錄入一個不斷延展的、以雜湊為基礎的工作證明鏈上，形成一個如非完全重做就不可能改變的記錄。最長鏈，一方面用來證明已被見證的事件及其順序，與此同時，也用來證明它來自於最大的 CPU 運算能力池。只要絕大多數 CPU 運算能力被良性節點控制 —— 即，它們不與那些嘗試攻擊網路的節點合作 —— 那麼，良性節點將會生成最長鏈，並且在速度上超過攻擊者。這個網路本身需要最小化的結構。資訊將以最大努力為基本去傳播，節點來去自由；但，加入之時總是需要接受最長的工作證明鏈作為它們未參與期間所發生之一切的證明。
+> **摘要**：一個純粹的點對點版本的電子現金系統，將允許線上支付直接從一方傳送到另一方，而無需通過金融機構。數字簽名雖然提供了部分解決方案，但，若是仍然需要被信任的第三方來防止雙重支付的話，那麼電子支付的主要優勢就被抵消了。我們提出一個方案，使用點對點網路去解決雙重支付問題。點對點網路將為每筆交易標記時間戳，方法是：把交易的雜湊資料錄入一個不斷延展的、以雜湊為基礎的工作量證明鏈上，形成一個如非完全重做就不可能改變的記錄。最長鏈，一方面用來證明已被見證的事件及其順序，與此同時，也用來證明它來自於最大的 CPU 運算能力池。只要絕大多數 CPU 運算能力被良性節點控制 —— 即，它們不與那些嘗試攻擊網路的節點合作 —— 那麼，良性節點將會生成最長鏈，並且在速度上超過攻擊者。這個網路本身需要最小化的結構。資訊將以最大努力為基本去傳播，節點來去自由；但，加入之時總是需要接受最長的工作量證明鏈作為它們未參與期間所發生之一切的證明。
 
 -----
 
@@ -45,25 +45,25 @@ The solution we propose begins with a timestamp server. A timestamp server works
 
 ![](images/timestamp-server.png)
 
-## 4. 工作證明 (Proof-of-Work)
+## 4. 工作量證明 (Proof-of-Work)
 
 To implement a distributed timestamp server on a peer-to-peer basis, we will need to use a proof-of-work system similar to Adam Back's Hashcash[^6], rather than newspaper or Usenet posts. The proof-of-work involves scanning for a value that when hashed, such as with SHA-256, the hash begins with a number of zero bits. The average work required is exponential in the number of zero bits required and can be verified by executing a single hash.
 
-為了實現一個基於點對點的分散式時間戳伺服器，我們需要使用類似亞當·伯克的雜湊現金[^6]那樣的一個工作證明系統，而不是報紙或者新聞組帖子那樣的東西。所謂的工作證明，就是去尋找一個數值；這個數值要滿足以下條件：為它提取雜湊數值之後 —— 例如使用 SHA-256 計算雜湊數值 —— 這個雜湊數值必須以一定數量的 0 開頭。每增加一個 0 的要求，將使得工作量指數級增加，並且，這個工作量的驗證卻只需通過計算一個雜湊。
+為了實現一個基於點對點的分散式時間戳伺服器，我們需要使用類似亞當·伯克的雜湊現金[^6]那樣的一個工作量證明系統，而不是報紙或者新聞組帖子那樣的東西。所謂的工作量證明，就是去尋找一個數值；這個數值要滿足以下條件：為它提取雜湊數值之後 —— 例如使用 SHA-256 計算雜湊數值 —— 這個雜湊數值必須以一定數量的 0 開頭。每增加一個 0 的要求，將使得工作量指數級增加，並且，這個工作量的驗證卻只需通過計算一個雜湊。
 
 For our timestamp network, we implement the proof-of-work by incrementing a nonce in the block until a value is found that gives the block's hash the required zero bits. Once the CPU effort has been expended to make it satisfy the proof-of-work, the block cannot be changed without redoing the work. As later blocks are chained after it, the work to change the block would include redoing all the blocks after it.
 
-在我們的時間戳網路中，我們是這樣實現工作證明的：不斷在區塊之中增加一個隨機數（Nonce），直到一個滿足條件的數值被找到；這個條件就是，這個區塊的雜湊以指定數量的 0 開頭。一旦 CPU 的耗費運算能力所獲的的結果滿足工作證明，那麼這個區塊將不再能被更改，除非重新完成之前的所有工作量。隨著新的區塊不斷被新增進來，改變當前區塊即意味著說要重新完成所有其後區塊的工作。
+在我們的時間戳網路中，我們是這樣實現工作量證明的：不斷在區塊之中增加一個隨機數（Nonce），直到一個滿足條件的數值被找到；這個條件就是，這個區塊的雜湊以指定數量的 0 開頭。一旦 CPU 的耗費運算能力所獲的的結果滿足工作量證明，那麼這個區塊將不再能被更改，除非重新完成之前的所有工作量。隨著新的區塊不斷被新增進來，改變當前區塊即意味著說要重新完成所有其後區塊的工作。
 
 ![](images/proof-of-work.png)
 
 The proof-of-work also solves the problem of determining representation in majority decision making. If the majority were based on one-IP-address-one-vote, it could be subverted by anyone able to allocate many IPs. Proof-of-work is essentially one-CPU-one-vote. The majority decision is represented by the longest chain, which has the greatest proof-of-work effort invested in it. If a majority of CPU power is controlled by honest nodes, the honest chain will grow the fastest and outpace any competing chains. To modify a past block, an attacker would have to redo the proof-of-work of the block and all blocks after it and then catch up with and surpass the work of the honest nodes. We will show later that the probability of a slower attacker catching up diminishes exponentially as subsequent blocks are added.
 
-工作證明同時解決了如何決定誰能代表大多數做決定的問題。如果所謂的“大多數”是基於“一個IP地址一票”的方式決定的話，那麼任何一個可以搞定很多 IP 地址的人就可以被認為是“大多數”。工作證明本質上來看，是“一個CPU一票”。所謂的“大多數決定”是由最長鏈所代表的，因為被投入最多工作的鏈就是它。如果大多數 CPU 運算能力被誠實的節點所控制，那麼誠實鏈成長最為迅速，其速度會遠超其他競爭鏈。為了更改一個已經產生的區塊，攻擊者將不得不重新完成那個區塊以及所有其後區塊的的工作證明，而後還要追上並超過誠實節點的工作。後文展示為什麼一個被拖延了的攻擊者能夠追上的可能性將隨著區塊的不斷增加而指數級降低。
+工作量證明同時解決了如何決定誰能代表大多數做決定的問題。如果所謂的“大多數”是基於“一個IP地址一票”的方式決定的話，那麼任何一個可以搞定很多 IP 地址的人就可以被認為是“大多數”。工作量證明本質上來看，是“一個CPU一票”。所謂的“大多數決定”是由最長鏈所代表的，因為被投入最多工作的鏈就是它。如果大多數 CPU 運算能力被誠實的節點所控制，那麼誠實鏈成長最為迅速，其速度會遠超其他競爭鏈。為了更改一個已經產生的區塊，攻擊者將不得不重新完成那個區塊以及所有其後區塊的的工作量證明，而後還要追上並超過誠實節點的工作。後文展示為什麼一個被拖延了的攻擊者能夠追上的可能性將隨著區塊的不斷增加而指數級降低。
 
 To compensate for increasing hardware speed and varying interest in running nodes over time, the proof-of-work difficulty is determined by a moving average targeting an average number of blocks per hour. If they're generated too fast, the difficulty increases.
 
-為了應對硬體運算能力綜合的不斷增加，以及隨著時間推進可能產生的節點參與數量變化，工作證明難度由此決定：基於平均每小時產生的區塊數量的一個移動平均值。如果區塊生成得過快，那麼難度將會增加。
+為了應對硬體運算能力綜合的不斷增加，以及隨著時間推進可能產生的節點參與數量變化，工作量證明難度由此決定：基於平均每小時產生的區塊數量的一個移動平均值。如果區塊生成得過快，那麼難度將會增加。
 
 ## 5. 網路 (Network)
 
@@ -80,14 +80,14 @@ The steps to run the network are as follows:
 
 > 1. 所有新的交易向所有節點廣播；
 > 2. 每個節點將新交易打包到一個區塊；
-> 3. 每個節點開始為此區塊找一個具備難度的工作證明；
-> 4. 當某個區塊找到其工作證明，它就要將此區塊廣播給所有節點；
+> 3. 每個節點開始為此區塊找一個具備難度的工作量證明；
+> 4. 當某個區塊找到其工作量證明，它就要將此區塊廣播給所有節點；
 > 5. 眾多其他節點當且只當以下條件滿足才會接受這個區塊：其中所有的交易都是有效的，且未被雙重支付；
 > 6. 眾多節點向網路表示自己接受這個區塊的方法是，在建立下一個區塊的時候，把被接受區塊的雜湊當作新區塊之前的雜湊。
 
 Nodes always consider the longest chain to be the correct one and will keep working on extending it. If two nodes broadcast different versions of the next block simultaneously, some nodes may receive one or the other first. In that case, they work on the first one they received, but save the other branch in case it becomes longer. The tie will be broken when the next proof-of-work is found and one branch becomes longer; the nodes that were working on the other branch will then switch to the longer one.
 
-節點始終認為最長鏈是正確的那個，且會不斷向其新增新資料。若是有兩個節點同時向網路廣播了兩個不同版本的“下一個區塊”，有些節點會先接收到其中一個，而另外一些節點會先接收到另外一個。這種情況下，節點將在它們先接收到的那個區塊上繼續工作，但也會把另外一個分支儲存下來，以防後者成為最長鏈。當下一個工作證明被找到，而其中的一個分支成為更長的鏈之後，這個暫時的分歧會被打消，在另外一個分支上工作的節點們會切換到更長的鏈上。
+節點始終認為最長鏈是正確的那個，且會不斷向其新增新資料。若是有兩個節點同時向網路廣播了兩個不同版本的“下一個區塊”，有些節點會先接收到其中一個，而另外一些節點會先接收到另外一個。這種情況下，節點將在它們先接收到的那個區塊上繼續工作，但也會把另外一個分支儲存下來，以防後者成為最長鏈。當下一個工作量證明被找到，而其中的一個分支成為更長的鏈之後，這個暫時的分歧會被打消，在另外一個分支上工作的節點們會切換到更長的鏈上。
 
 New transaction broadcasts do not necessarily need to reach all nodes. As long as they reach many nodes, they will get into a block before long. Block broadcasts are also tolerant of dropped messages. If a node does not receive a block, it will request it when it receives the next block and realizes it missed one.
 
@@ -123,7 +123,7 @@ A block header with no transactions would be about 80 bytes. If we suppose block
 
 It is possible to verify payments without running a full network node. A user only needs to keep a copy of the block headers of the longest proof-of-work chain, which he can get by querying network nodes until he's convinced he has the longest chain, and obtain the Merkle branch linking the transaction to the block it's timestamped in. He can't check the transaction for himself, but by linking it to a place in the chain, he can see that a network node has accepted it, and blocks added after it further confirm the network has accepted it.
 
-即便不用執行一個完整網路節點也有可能確認支付。使用者只需要有一份擁有工作證明的最長鏈的區塊頭拷貝 —— 他可以通過查詢線上節點確認自己擁有的確實來自最長鏈 —— 而後獲取 Merkle 樹的樹枝節點，進而連線到這個區塊被打上時間戳時的交易。使用者並不能自己檢查交易，但，通過連線到鏈上的某個地方，他可以看到某個網路節點已經接受了這個交易，而此後加進來的區塊進一步確認了網路已經接受了此筆交易。
+即便不用執行一個完整網路節點也有可能確認支付。使用者只需要有一份擁有工作量證明的最長鏈的區塊頭拷貝 —— 他可以通過查詢線上節點確認自己擁有的確實來自最長鏈 —— 而後獲取 Merkle 樹的樹枝節點，進而連線到這個區塊被打上時間戳時的交易。使用者並不能自己檢查交易，但，通過連線到鏈上的某個地方，他可以看到某個網路節點已經接受了這個交易，而此後加進來的區塊進一步確認了網路已經接受了此筆交易。
 
 ![](images/simplified-payment-verification.png)
 
@@ -281,7 +281,7 @@ Solving for P less than 0.1%...
 
 We have proposed a system for electronic transactions without relying on trust. We started with the usual framework of coins made from digital signatures, which provides strong control of ownership, but is incomplete without a way to prevent double-spending. To solve this, we proposed a peer-to-peer network using proof-of-work to record a public history of transactions that quickly becomes computationally impractical for an attacker to change if honest nodes control a majority of CPU power. The network is robust in its unstructured simplicity. Nodes work all at once with little coordination. They do not need to be identified, since messages are not routed to any particular place and only need to be delivered on a best effort basis. Nodes can leave and rejoin the network at will, accepting the proof-of-work chain as proof of what happened while they were gone. They vote with their CPU power, expressing their acceptance of valid blocks by working on extending them and rejecting invalid blocks by refusing to work on them. Any needed rules and incentives can be enforced with this consensus mechanism.
 
-我們提出了一個不必依賴信任的電子交易系統；起點是一個普通的使用數字簽名的硬幣框架開始，雖然它提供了健壯的所有權控制，卻無法避免雙重支付。為了解決這個問題，我們提出一個使用工作證明機制的點對點網路去記錄一個公開的交易記錄歷史，只要誠實節點能夠控制大多數 CPU 運算能力，那麼攻擊者就僅從運算能力方面就不可能成功篡改系統。這個網路的健壯在於它的無結構的簡單。節點們可以在很少協同的情況下瞬間同時工作。它們甚至不需要被辨認，因為訊息的路徑並非取決於特定的終點；訊息只需要被以最大努力為基本去傳播即可。節點來去自由，重新加入時，只需要接受工作證明鏈，作為它們離線之時所發生之一切的證明。它們通過它們的 CPU 運算能力投票，通過不斷為鏈新增新的有效區塊、拒絕無效區塊，去表示它們對有效交易的接受與否。任何必要的規則和獎勵都可以通過這個共識機制來強制實施。
+我們提出了一個不必依賴信任的電子交易系統；起點是一個普通的使用數字簽名的硬幣框架開始，雖然它提供了健壯的所有權控制，卻無法避免雙重支付。為了解決這個問題，我們提出一個使用工作量證明機制的點對點網路去記錄一個公開的交易記錄歷史，只要誠實節點能夠控制大多數 CPU 運算能力，那麼攻擊者就僅從運算能力方面就不可能成功篡改系統。這個網路的健壯在於它的無結構的簡單。節點們可以在很少協同的情況下瞬間同時工作。它們甚至不需要被辨認，因為訊息的路徑並非取決於特定的終點；訊息只需要被以最大努力為基本去傳播即可。節點來去自由，重新加入時，只需要接受工作量證明鏈，作為它們離線之時所發生之一切的證明。它們通過它們的 CPU 運算能力投票，通過不斷為鏈新增新的有效區塊、拒絕無效區塊，去表示它們對有效交易的接受與否。任何必要的規則和獎勵都可以通過這個共識機制來強制實施。
 
 -----
 
