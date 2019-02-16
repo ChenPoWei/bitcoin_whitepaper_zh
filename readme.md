@@ -44,7 +44,7 @@ The problem of course is the payee can't verify that one of the owners did not d
 
 We need a way for the payee to know that the previous owners did not sign any earlier transactions. For our purposes, the earliest transaction is the one that counts, so we don't care about later attempts to double-spend. The only way to confirm the absence of a transaction is to be aware of all transactions. In the mint based model, the mint was aware of all transactions and decided which arrived first. To accomplish this without a trusted party, transactions must be publicly announced[^1], and we need a system for participants to agree on a single history of the order in which they were received. The payee needs proof that at the time of each transaction, the majority of nodes agreed it was the first received.
 
-我們需要一種方式，可以讓收款人確認之前的所有者並沒有在任何之前的交易上簽名。就我們的目的而言，只有最早的交易是算數的，所以，我們並不關心其後的雙重支付企圖。確認一筆交易不存在的唯一方法是獲悉所有的交易。在鑄幣廠模型之中，鑄幣廠已然知悉所有的交易，並且能夠確認這些交易的順序。為了能在沒有“被信任的一方”參與的情況下完成以上任務，交易記錄必須被公開宣佈[^1]，進而我們需要一個系統能讓參與者們認同它們所接收到的同一個唯一的交易歷史。收款人需要證明在每筆交易發生之時，大多數節點能夠認同它是第一個被接收的。
+我們需要一種方式，可以讓收款人確認之前的所有者並沒有在任何之前的交易上簽名。就我們的目的而言，只有最早的交易是算數的，所以，我們並不關心其後的雙重支付企圖。確認一筆交易不存在的唯一方法是獲悉所有的交易。在鑄幣廠模型之中，鑄幣廠已然知悉所有的交易，並且能夠確認這些交易的順序。為了能在沒有“被信任的一方”參與的情況下完成以上任務，交易記錄必須被公開宣佈[^1] ，進而我們需要一個系統能讓參與者們認同它們所接收到的同一個唯一的交易歷史。收款人需要證明在每筆交易發生之時，大多數節點能夠認同它是第一個被接收的。
 
 -----
 
@@ -356,7 +356,7 @@ We have proposed a system for electronic transactions without relying on trust. 
 ## 參考文獻 (References)
 
 
-[^1]: **b-money** Dai Wei (1998-11-01)   
+[^1]: **b-money** Dai Wei (1998-11-01) <http://www.weidai.com/bmoney.txt>.   
 [^2]: **Design of a secure timestamping service with minimal trust requirements** Henri Massias, Xavier Serret-Avila, Jean-Jacques Quisquater *20th Symposium on Information Theory in the Benelux* (1999-05) <http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.13.6228>.   
 [^3]: **How to time-stamp a digital document** Stuart Haber, W.Scott Stornetta *Journal of Cryptology* (1991) <https://doi.org/cwwxd4> DOI: [10.1007/bf00196791](https://doi.org/10.1007/bf00196791).   
 [^4]: **Improving the Efficiency and Reliability of Digital Time-Stamping** Dave Bayer, Stuart Haber, W. Scott Stornetta *Sequences II* (1993) <https://doi.org/bn4rpx> DOI: [10.1007/978-1-4613-9323-8_24](https://doi.org/10.1007/978-1-4613-9323-8_24).   
