@@ -171,15 +171,9 @@ The probability of an attacker catching up from a given deficit is analogous to 
 
 p = 誠實節點找到下一個區塊的概率.   
 q = 攻擊者找到下一個區塊的概率.   
-q ~z~ = 攻擊者落後 $z$ 個區塊卻依然能夠趕上的概率.   
+q <sub>z</sub> = 攻擊者落後 $z$ 個區塊卻依然能夠趕上的概率.   
 
 ![](images/eq1.png).   
-$$
-\large q_z = \begin{Bmatrix}
-				1 & \textit{if}\; p \leq q\\
-				(q/p)^z & \textit{if}\; p > q
-				\end{Bmatrix}
-$$
 
 Given our assumption that $p \gt q​$, the probability drops exponentially as the number of blocks the attacker has to catch up with increases. With the odds against him, if he doesn't make a lucky lunge forward early on, his chances become vanishingly small as he falls further behind.
 
@@ -197,30 +191,19 @@ The recipient waits until the transaction has been added to a block and $z$ bloc
 
 收款人等到此筆交易被打包進區塊，並已經有 $z$ 個區塊隨後被加入。他並不知道攻擊者的工作進展究竟如何，但是可以假定誠實區塊在每個區塊生成過程中耗費的平均時間；攻擊者的潛在進展符合泊松分佈，其期望值為：
 
-$$
-\large \lambda = z \frac qp
-$$
+![](images/eq2.png).   
 
 To get the probability the attacker could still catch up now, we multiply the Poisson density for each amount of progress he could have made by the probability he could catch up from that point:
 
 為了算出攻擊者依然可以趕上的概率，我們要把每一個攻擊者已有的進展的帕鬆密度乘以他可以從那一點能夠追上來的概率：
 
-$$
-\large \sum_{k=0}^{\infty} \frac{\lambda^k e^{-\lambda}}{k!} \cdot
-				\begin{Bmatrix}
-				(q/p)^{(z-k)} & \textit{if}\;k\leq z\\
-				1 & \textit{if} \; k > z
-				\end{Bmatrix}
-$$
+![](images/eq3.png).   
 
 Rearranging to avoid summing the infinite tail of the distribution...
 
 為了避免對密度分佈的無窮級數求和重新整理…
 
-$$
-\large 1 - \sum_{k=0}^{z} \frac{\lambda^k e^{-\lambda}}{k!}
-				\left ( 1-(q/p)^{(z-k)} \right )
-$$
+![](images/eq4.png).   
 
 Converting to C code...
 
