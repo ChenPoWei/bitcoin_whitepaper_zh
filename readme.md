@@ -42,17 +42,17 @@ The problem of course is the payee can't verify that one of the owners did not d
 
 -----
 
-We need a way for the payee to know that the previous owners did not sign any earlier transactions. For our purposes, the earliest transaction is the one that counts, so we don't care about later attempts to double-spend. The only way to confirm the absence of a transaction is to be aware of all transactions. In the mint based model, the mint was aware of all transactions and decided which arrived first. To accomplish this without a trusted party, transactions must be publicly announced[1][1], and we need a system for participants to agree on a single history of the order in which they were received. The payee needs proof that at the time of each transaction, the majority of nodes agreed it was the first received.
+We need a way for the payee to know that the previous owners did not sign any earlier transactions. For our purposes, the earliest transaction is the one that counts, so we don't care about later attempts to double-spend. The only way to confirm the absence of a transaction is to be aware of all transactions. In the mint based model, the mint was aware of all transactions and decided which arrived first. To accomplish this without a trusted party, transactions must be publicly announced[^1], and we need a system for participants to agree on a single history of the order in which they were received. The payee needs proof that at the time of each transaction, the majority of nodes agreed it was the first received.
 
-我們需要一種方式，可以讓收款人確認之前的所有者並沒有在任何之前的交易上簽名。就我們的目的而言，只有最早的交易是算數的，所以，我們並不關心其後的雙重支付企圖。確認一筆交易不存在的唯一方法是獲悉所有的交易。在鑄幣廠模型之中，鑄幣廠已然知悉所有的交易，並且能夠確認這些交易的順序。為了能在沒有“被信任的一方”參與的情況下完成以上任務，交易記錄必須被公開宣佈[1][1]，進而我們需要一個系統能讓參與者們認同它們所接收到的同一個唯一的交易歷史。收款人需要證明在每筆交易發生之時，大多數節點能夠認同它是第一個被接收的。
+我們需要一種方式，可以讓收款人確認之前的所有者並沒有在任何之前的交易上簽名。就我們的目的而言，只有最早的交易是算數的，所以，我們並不關心其後的雙重支付企圖。確認一筆交易不存在的唯一方法是獲悉所有的交易。在鑄幣廠模型之中，鑄幣廠已然知悉所有的交易，並且能夠確認這些交易的順序。為了能在沒有“被信任的一方”參與的情況下完成以上任務，交易記錄必須被公開宣佈[^1]，進而我們需要一個系統能讓參與者們認同它們所接收到的同一個唯一的交易歷史。收款人需要證明在每筆交易發生之時，大多數節點能夠認同它是第一個被接收的。
 
 -----
 
 ## 3. 時間戳伺服器 (Timestamp Server)
 
-The solution we propose begins with a timestamp server. A timestamp server works by taking a hash of a block of items to be timestamped and widely publishing the hash, such as in a newspaper or Usenet post[2] [3] [4] [5]. The timestamp proves that the data must have existed at the time, obviously, in order to get into the hash. Each timestamp includes the previous timestamp in its hash, forming a chain, with each additional timestamp reinforcing the ones before it.
+The solution we propose begins with a timestamp server. A timestamp server works by taking a hash of a block of items to be timestamped and widely publishing the hash, such as in a newspaper or Usenet post[^2] [^3] [^4] [^5]. The timestamp proves that the data must have existed at the time, obviously, in order to get into the hash. Each timestamp includes the previous timestamp in its hash, forming a chain, with each additional timestamp reinforcing the ones before it.
 
-本解決方案起步於一種時間戳伺服器。時間戳伺服器是這樣工作的：為一組（block）記錄（items）的雜湊打上時間戳，而後把雜湊廣播出去，就好像一份報紙所做的那樣，或者像是在新聞組（Usenet）裡的一個帖子那樣[2] [3] [4] [5]。顯然，時間戳能夠證明那資料在那個時間點之前已然存在，否則那雜湊也就無法生成。每個時間戳在其雜湊中包含著之前的時間戳，因此構成了一個鏈；每一個新的時間戳被新增到之前的時間戳之後。
+本解決方案起步於一種時間戳伺服器。時間戳伺服器是這樣工作的：為一組（block）記錄（items）的雜湊打上時間戳，而後把雜湊廣播出去，就好像一份報紙所做的那樣，或者像是在新聞組（Usenet）裡的一個帖子那樣[^2] [^3] [^4] [^5]。顯然，時間戳能夠證明那資料在那個時間點之前已然存在，否則那雜湊也就無法生成。每個時間戳在其雜湊中包含著之前的時間戳，因此構成了一個鏈；每一個新的時間戳被新增到之前的時間戳之後。
 
 ![](images/timestamp-server.png)
 
@@ -60,9 +60,9 @@ The solution we propose begins with a timestamp server. A timestamp server works
 
 ## 4. 工作量證明 (Proof-of-Work)
 
-To implement a distributed timestamp server on a peer-to-peer basis, we will need to use a proof-of-work system similar to Adam Back's Hashcash[6], rather than newspaper or Usenet posts. The proof-of-work involves scanning for a value that when hashed, such as with SHA-256, the hash begins with a number of zero bits. The average work required is exponential in the number of zero bits required and can be verified by executing a single hash.
+To implement a distributed timestamp server on a peer-to-peer basis, we will need to use a proof-of-work system similar to Adam Back's Hashcash[^6], rather than newspaper or Usenet posts. The proof-of-work involves scanning for a value that when hashed, such as with SHA-256, the hash begins with a number of zero bits. The average work required is exponential in the number of zero bits required and can be verified by executing a single hash.
 
-為了實現一個基於點對點的分散式時間戳伺服器，我們需要使用類似亞當·伯克的雜湊現金[6]那樣的一個工作量證明系統，而不是報紙或者新聞組帖子那樣的東西。所謂的工作量證明，就是去尋找一個數值；這個數值要滿足以下條件：為它提取雜湊數值之後 —— 例如使用 SHA-256 計算雜湊數值 —— 這個雜湊數值必須以一定數量的 0 開頭。每增加一個 0 的要求，將使得工作量指數級增加，並且，這個工作量的驗證卻只需通過計算一個雜湊。
+為了實現一個基於點對點的分散式時間戳伺服器，我們需要使用類似亞當·伯克的雜湊現金[^6]那樣的一個工作量證明系統，而不是報紙或者新聞組帖子那樣的東西。所謂的工作量證明，就是去尋找一個數值；這個數值要滿足以下條件：為它提取雜湊數值之後 —— 例如使用 SHA-256 計算雜湊數值 —— 這個雜湊數值必須以一定數量的 0 開頭。每增加一個 0 的要求，將使得工作量指數級增加，並且，這個工作量的驗證卻只需通過計算一個雜湊。
 
 -----
 
@@ -142,9 +142,9 @@ The incentive may help encourage nodes to stay honest. If a greedy attacker is a
 
 ## 7. 回收硬碟空間 (Reclaiming Disk Space)
 
-Once the latest transaction in a coin is buried under enough blocks, the spent transactions before it can be discarded to save disk space. To facilitate this without breaking the block's hash, transactions are hashed in a Merkle Tree[2][5][7], with only the root included in the block's hash. Old blocks can then be compacted by stubbing off branches of the tree. The interior hashes do not need to be stored.
+Once the latest transaction in a coin is buried under enough blocks, the spent transactions before it can be discarded to save disk space. To facilitate this without breaking the block's hash, transactions are hashed in a Merkle Tree[^2][^5][^7], with only the root included in the block's hash. Old blocks can then be compacted by stubbing off branches of the tree. The interior hashes do not need to be stored.
 
-如果一枚硬幣最近發生的交易發生在足夠多的區塊之前，那麼，這筆交易之前該硬幣的花銷交易記錄可以被丟棄 —— 目的是為了節省磁碟空間。為了在不破壞該區塊的雜湊的前提下實現此功能，交易記錄的雜湊將被納入一個 Merkle 樹[2][5][7]之中，而只有樹根被納入該區塊的雜湊之中。通過砍掉樹枝方法，老區塊即可被壓縮。內部的雜湊並不需要被儲存。
+如果一枚硬幣最近發生的交易發生在足夠多的區塊之前，那麼，這筆交易之前該硬幣的花銷交易記錄可以被丟棄 —— 目的是為了節省磁碟空間。為了在不破壞該區塊的雜湊的前提下實現此功能，交易記錄的雜湊將被納入一個 Merkle 樹[^2][^5][^7]之中，而只有樹根被納入該區塊的雜湊之中。通過砍掉樹枝方法，老區塊即可被壓縮。內部的雜湊並不需要被儲存。
 
 ![](images/reclaiming-disk-space.png)
 
@@ -218,9 +218,9 @@ The race between the honest chain and an attacker chain can be characterized as 
 
 -----
 
-The probability of an attacker catching up from a given deficit is analogous to a Gambler's Ruin problem. Suppose a gambler with unlimited credit starts at a deficit and plays potentially an infinite number of trials to try to reach breakeven. We can calculate the probability he ever reaches breakeven, or that an attacker ever catches up with the honest chain, as follows[8]:
+The probability of an attacker catching up from a given deficit is analogous to a Gambler's Ruin problem. Suppose a gambler with unlimited credit starts at a deficit and plays potentially an infinite number of trials to try to reach breakeven. We can calculate the probability he ever reaches breakeven, or that an attacker ever catches up with the honest chain, as follows[^8]:
 
-攻擊者能夠從落後局面追平的機率類似於賭徒破產問題。假設，一個拿著無限籌碼的賭徒，從虧空開始，允許他賭無限次，目標是填補上已有的虧空。我們能算出他最終能填補虧空的機率，也就是攻擊者能夠趕上誠實鏈的機率[8]，如下：
+攻擊者能夠從落後局面追平的機率類似於賭徒破產問題。假設，一個拿著無限籌碼的賭徒，從虧空開始，允許他賭無限次，目標是填補上已有的虧空。我們能算出他最終能填補虧空的機率，也就是攻擊者能夠趕上誠實鏈的機率[^8]，如下：
 
 p = 誠實節點找到下一個區塊的機率.   
 q = 攻擊者找到下一個區塊的機率.   
@@ -356,12 +356,12 @@ We have proposed a system for electronic transactions without relying on trust. 
 ## 參考文獻 (References)
 
 
-[1]: **b-money** Dai Wei (1998-11-01) <http://www.weidai.com/bmoney.txt>
-[2]: **Design of a secure timestamping service with minimal trust requirements** Henri Massias, Xavier Serret-Avila, Jean-Jacques Quisquater *20th Symposium on Information Theory in the Benelux* (1999-05) <http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.13.6228>
-[3]: **How to time-stamp a digital document** Stuart Haber, W.Scott Stornetta *Journal of Cryptology* (1991) <https://doi.org/cwwxd4> DOI: [10.1007/bf00196791](https://doi.org/10.1007/bf00196791)
-[4]: **Improving the Efficiency and Reliability of Digital Time-Stamping** Dave Bayer, Stuart Haber, W. Scott Stornetta *Sequences II* (1993) <https://doi.org/bn4rpx> DOI: [10.1007/978-1-4613-9323-8_24](https://doi.org/10.1007/978-1-4613-9323-8_24)
-[5]: **Secure names for bit-strings** Stuart Haber, W. Scott Stornetta *Proceedings of the 4th ACM conference on Computer and communications security - CCS ’97*(1997) <https://doi.org/dtnrf6> DOI: [10.1145/266420.266430](https://doi.org/10.1145/266420.266430)
-[6]: **Hashcash - A Denial of Service Counter-Measure** Adam Back (2002-08-01) <http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.15.8>
-[7]: **Protocols for Public Key Cryptosystems** Ralph C. Merkle *1980 IEEE Symposium on Security and Privacy* (1980-04) <https://doi.org/bmvbd6> DOI: [10.1109/sp.1980.10006](https://doi.org/10.1109/sp.1980.10006)
-[8]: **An Introduction to Probability Theory and its Applications** William Feller *John Wiley & Sons* (1957) <https://archive.org/details/AnIntroductionToProbabilityTheoryAndItsApplicationsVolume1>
+[^1]: **b-money** Dai Wei (1998-11-01) <http://www.weidai.com/bmoney.txt>
+[^2]: **Design of a secure timestamping service with minimal trust requirements** Henri Massias, Xavier Serret-Avila, Jean-Jacques Quisquater *20th Symposium on Information Theory in the Benelux* (1999-05) <http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.13.6228>
+[^3]: **How to time-stamp a digital document** Stuart Haber, W.Scott Stornetta *Journal of Cryptology* (1991) <https://doi.org/cwwxd4> DOI: [10.1007/bf00196791](https://doi.org/10.1007/bf00196791)
+[^4]: **Improving the Efficiency and Reliability of Digital Time-Stamping** Dave Bayer, Stuart Haber, W. Scott Stornetta *Sequences II* (1993) <https://doi.org/bn4rpx> DOI: [10.1007/978-1-4613-9323-8_24](https://doi.org/10.1007/978-1-4613-9323-8_24)
+[^5]: **Secure names for bit-strings** Stuart Haber, W. Scott Stornetta *Proceedings of the 4th ACM conference on Computer and communications security - CCS ’97*(1997) <https://doi.org/dtnrf6> DOI: [10.1145/266420.266430](https://doi.org/10.1145/266420.266430)
+[^6]: **Hashcash - A Denial of Service Counter-Measure** Adam Back (2002-08-01) <http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.15.8>
+[^7]: **Protocols for Public Key Cryptosystems** Ralph C. Merkle *1980 IEEE Symposium on Security and Privacy* (1980-04) <https://doi.org/bmvbd6> DOI: [10.1109/sp.1980.10006](https://doi.org/10.1109/sp.1980.10006)
+[^8]: **An Introduction to Probability Theory and its Applications** William Feller *John Wiley & Sons* (1957) <https://archive.org/details/AnIntroductionToProbabilityTheoryAndItsApplicationsVolume1>
 
