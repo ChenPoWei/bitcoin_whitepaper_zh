@@ -1,6 +1,4 @@
 # 比特幣：一種點對點的電子現金系統
-<img src="http://chart.googleapis.com/chart?cht=tx&chl=\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" style="border:none;">
-
 
 ​作者：中本聰 satoshin@gmx.com www.bitcoin.org 2008.10.31.   
 ​簡中翻譯：李笑來 lixiaolai@gmail.com 2018.10.31.   
