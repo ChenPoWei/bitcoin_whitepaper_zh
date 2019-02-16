@@ -27,7 +27,7 @@ We define an electronic coin as a chain of digital signatures. Each owner transf
 
 我們將一枚電子硬幣定義為一個數字簽名鏈。一位所有者將一枚硬幣交給另一個人的時候，要通過在這個數字簽名鏈的末尾附加上以下數字簽名：上一筆交易的雜湊（hash，音譯，亦翻譯為“雜湊值”），以及新所有者的公鑰。收款人可以通過驗證簽名去驗證數字簽名鏈的所屬權。
 
-![](images/transactions.svg)
+![](images/transactions.png)
 
 The problem of course is the payee can't verify that one of the owners did not double-spend the coin. A common solution is to introduce a trusted central authority, or mint, that checks every transaction for double spending. After each transaction, the coin must be returned to the mint to issue a new coin, and only coins issued directly from the mint are trusted not to be double-spent. The problem with this solution is that the fate of the entire money system depends on the company running the mint, with every transaction having to go through them, just like a bank.
 
@@ -43,7 +43,7 @@ The solution we propose begins with a timestamp server. A timestamp server works
 
 本解決方案起步於一種時間戳伺服器。時間戳伺服器是這樣工作的：為一組（block）記錄（items）的雜湊打上時間戳，而後把雜湊廣播出去，就好像一份報紙所做的那樣，或者像是在新聞組（Usenet）裡的一個帖子那樣[^2] [^3] [^4] [^5]。顯然，時間戳能夠證明那資料在那個時間點之前已然存在，否則那雜湊也就無法生成。每個時間戳在其雜湊中包含著之前的時間戳，因此構成了一個鏈；每一個新的時間戳被新增到之前的時間戳之後。
 
-![](images/timestamp-server.svg)
+![](images/timestamp-server.png)
 
 ## 4. 工作證明 (Proof-of-Work)
 
@@ -55,7 +55,7 @@ For our timestamp network, we implement the proof-of-work by incrementing a nonc
 
 在我們的時間戳網路中，我們是這樣實現工作證明的：不斷在區塊之中增加一個隨機數（Nonce），直到一個滿足條件的數值被找到；這個條件就是，這個區塊的雜湊以指定數量的 0 開頭。一旦 CPU 的耗費算力所獲的的結果滿足工作證明，那麼這個區塊將不再能被更改，除非重新完成之前的所有工作量。隨著新的區塊不斷被新增進來，改變當前區塊即意味著說要重新完成所有其後區塊的工作。
 
-![](images/proof-of-work.svg)
+![](images/proof-of-work.png)
 
 The proof-of-work also solves the problem of determining representation in majority decision making. If the majority were based on one-IP-address-one-vote, it could be subverted by anyone able to allocate many IPs. Proof-of-work is essentially one-CPU-one-vote. The majority decision is represented by the longest chain, which has the greatest proof-of-work effort invested in it. If a majority of CPU power is controlled by honest nodes, the honest chain will grow the fastest and outpace any competing chains. To modify a past block, an attacker would have to redo the proof-of-work of the block and all blocks after it and then catch up with and surpass the work of the honest nodes. We will show later that the probability of a slower attacker catching up diminishes exponentially as subsequent blocks are added.
 
@@ -113,7 +113,7 @@ Once the latest transaction in a coin is buried under enough blocks, the spent t
 
 如果一枚硬幣最近發生的交易發生在足夠多的區塊之前，那麼，這筆交易之前該硬幣的花銷交易記錄可以被丟棄 —— 目的是為了節省磁碟空間。為了在不破壞該區塊的雜湊的前提下實現此功能，交易記錄的雜湊將被納入一個 Merkle 樹[^2][^5][^7]之中，而只有樹根被納入該區塊的雜湊之中。通過砍掉樹枝方法，老區塊即可被壓縮。內部的雜湊並不需要被儲存。
 
-![](images/reclaiming-disk-space.svg)
+![](images/reclaiming-disk-space.png)
 
 A block header with no transactions would be about 80 bytes. If we suppose blocks are generated every 10 minutes, 80 bytes * 6 * 24 * 365 = 4.2MB per year. With computer systems typically selling with 2GB of RAM as of 2008, and Moore's Law predicting current growth of 1.2GB per year, storage should not be a problem even if the block headers must be kept in memory.
 
@@ -125,7 +125,7 @@ It is possible to verify payments without running a full network node. A user on
 
 即便不用執行一個完整網路節點也有可能確認支付。使用者只需要有一份擁有工作證明的最長鏈的區塊頭拷貝 —— 他可以通過查詢線上節點確認自己擁有的確實來自最長鏈 —— 而後獲取 Merkle 樹的樹枝節點，進而連線到這個區塊被打上時間戳時的交易。使用者並不能自己檢查交易，但，通過連線到鏈上的某個地方，他可以看到某個網路節點已經接受了這個交易，而此後加進來的區塊進一步確認了網路已經接受了此筆交易。
 
-![](images/simplified-payment-verification.svg)
+![](images/simplified-payment-verification.png)
 
 As such, the verification is reliable as long as honest nodes control the network, but is more vulnerable if the network is overpowered by an attacker. While network nodes can verify transactions for themselves, the simplified method can be fooled by an attacker's fabricated transactions for as long as the attacker can continue to overpower the network. One strategy to protect against this would be to accept alerts from network nodes when they detect an invalid block, prompting the user's software to download the full block and alerted transactions to confirm the inconsistency. Businesses that receive frequent payments will probably still want to run their own nodes for more independent security and quicker verification.
 
@@ -137,7 +137,7 @@ Although it would be possible to handle coins individually, it would be unwieldy
 
 儘管逐個地處理硬幣是可能的，但為每分錢設定一個單獨的記錄是很笨拙的。為了允許價值的分割與合併，交易記錄包含多個輸入和輸出。一般情況下，要麼是一個單獨的來自於一個相對大的之前的交易的輸入，要麼是很多個輸入來自於更小金額的組合；與此同時，最多有兩個輸出：一個是支付（指向收款方），如果必要的話，另外一個是找零（指向發款方）。
 
-![](images/combining-splitting-value.svg)
+![](images/combining-splitting-value.png)
 
 It should be noted that fan-out, where a transaction depends on several transactions, and those transactions depend on many more, is not a problem here. There is never the need to extract a complete standalone copy of a transaction's history.
 
@@ -149,7 +149,7 @@ The traditional banking model achieves a level of privacy by limiting access to 
 
 傳統的銀行模型通過限制他人獲取交易者和可信第三方的資訊而達成一定程度的隱私保護。出於對將所有交易記錄公開的需求否決了這種方法。但是，維持隱私可通過於另一處的切斷資訊流來實現——公鑰匿名。公眾可以看到某某向某某轉賬了一定的金額，但是，沒有任何資訊指向某個確定的人。這種水平的資訊釋出有點像股市交易，只有時間和各個交易的金額被公佈，但是，沒有人知道交易雙方都是誰。
 
-![](images/privacy.svg)
+![](images/privacy.png)
 
 As an additional firewall, a new key pair should be used for each transaction to keep them from being linked to a common owner. Some linking is still unavoidable with multi-input transactions, which necessarily reveal that their inputs were owned by the same owner. The risk is that if the owner of a key is revealed, linking could reveal other transactions that belonged to the same owner.
 
@@ -169,12 +169,7 @@ The probability of an attacker catching up from a given deficit is analogous to 
 
 攻擊者能夠從落後局面追平的概率類似於賭徒破產問題。假設，一個拿著無限籌碼的賭徒，從虧空開始，允許他賭無限次，目標是填補上已有的虧空。我們能算出他最終能填補虧空的概率，也就是攻擊者能夠趕上誠實鏈的概率[^8]，如下：
 
-![](http://latex.codecogs.com/gif.latex?\\frac{\\partialJ}{\\partial\\theta_k^{(j)}}=\\sum_{i:r(i,j)=1}{\\big((\\theta^{(j)})^Tx^{(i)}-y^{(i,j)}\\big)x_k^{(i)}}+\\lambda\\xtheta_k^{(j)})
 
-作者：Deep Reader
-链接：https://www.zhihu.com/question/26887527/answer/43166739
-来源：知乎
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 $$
 \begin{eqnarray*}
