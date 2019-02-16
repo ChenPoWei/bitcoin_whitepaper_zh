@@ -169,7 +169,7 @@ The probability of an attacker catching up from a given deficit is analogous to 
 
 攻擊者能夠從落後局面追平的概率類似於賭徒破產問題。假設，一個拿著無限籌碼的賭徒，從虧空開始，允許他賭無限次，目標是填補上已有的虧空。我們能算出他最終能填補虧空的概率，也就是攻擊者能夠趕上誠實鏈的概率[^8]，如下：
 
-![](http://latex.codecogs.com/gif.latex?\\frac{\\partialJ}{\\partial\\theta_k^{(j)}}=\\sum_{i:r(i,j)=1}{\\big((\\theta^{(j)})^Tx^{(i)}-y^{(i,j)}\\big)x_k^{(i)}}+\\lambda \\xtheta_k^{(j)})
+![](http://latex.codecogs.com/gif.latex?\\frac{\\partialJ}{\\partial\\theta_k^{(j)}}=\\sum_{i:r(i,j)=1}{\\big((\\theta^{(j)})^Tx^{(i)}-y^{(i,j)}\\big)x_k^{(i)}}+\\lambda\\xtheta_k^{(j)})
 
 作者：Deep Reader
 链接：https://www.zhihu.com/question/26887527/answer/43166739
