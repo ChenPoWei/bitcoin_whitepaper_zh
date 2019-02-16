@@ -167,17 +167,17 @@ The race between the honest chain and an attacker chain can be characterized as 
 
 The probability of an attacker catching up from a given deficit is analogous to a Gambler's Ruin problem. Suppose a gambler with unlimited credit starts at a deficit and plays potentially an infinite number of trials to try to reach breakeven. We can calculate the probability he ever reaches breakeven, or that an attacker ever catches up with the honest chain, as follows[^8]:
 
-攻擊者能夠從落後局面追平的概率類似於賭徒破產問題。假設，一個拿著無限籌碼的賭徒，從虧空開始，允許他賭無限次，目標是填補上已有的虧空。我們能算出他最終能填補虧空的概率，也就是攻擊者能夠趕上誠實鏈的概率[^8]，如下：
+攻擊者能夠從落後局面追平的機率類似於賭徒破產問題。假設，一個拿著無限籌碼的賭徒，從虧空開始，允許他賭無限次，目標是填補上已有的虧空。我們能算出他最終能填補虧空的機率，也就是攻擊者能夠趕上誠實鏈的機率[^8]，如下：
 
-p = 誠實節點找到下一個區塊的概率.   
-q = 攻擊者找到下一個區塊的概率.   
-q <sub>z</sub> = 攻擊者落後 'z' 個區塊卻依然能夠趕上的概率.   
+p = 誠實節點找到下一個區塊的機率.   
+q = 攻擊者找到下一個區塊的機率.   
+q <sub>z</sub> = 攻擊者落後 'z' 個區塊卻依然能夠趕上的機率.   
 
 ![](images/eq1.png).   
 
 Given our assumption that 'p > q​', the probability drops exponentially as the number of blocks the attacker has to catch up with increases. With the odds against him, if he doesn't make a lucky lunge forward early on, his chances become vanishingly small as he falls further behind.
 
-既然我們已經假定 'p > q', 既然攻擊者需要趕超的區塊數量越來越多，那麼其成功概率就會指數級下降。於贏面不利時，如果攻擊者沒有在起初就能幸運地做一個前移步刺，那麼他的勝率將在他進一步落後的同時消弭殆盡。
+既然我們已經假定 'p > q', 既然攻擊者需要趕超的區塊數量越來越多，那麼其成功機率就會指數級下降。於贏面不利時，如果攻擊者沒有在起初就能幸運地做一個前移步刺，那麼他的勝率將在他進一步落後的同時消弭殆盡。
 
 We now consider how long the recipient of a new transaction needs to wait before being sufficiently certain the sender can't change the transaction. We assume the sender is an attacker who wants to make the recipient believe he paid him for a while, then switch it to pay back to himself after some time has passed. The receiver will be alerted when that happens, but the sender hopes it will be too late.
 
@@ -195,7 +195,7 @@ The recipient waits until the transaction has been added to a block and 'z' bloc
 
 To get the probability the attacker could still catch up now, we multiply the Poisson density for each amount of progress he could have made by the probability he could catch up from that point:
 
-為了算出攻擊者依然可以趕上的概率，我們要把每一個攻擊者已有的進展的帕鬆密度乘以他可以從那一點能夠追上來的概率：
+為了算出攻擊者依然可以趕上的機率，我們要把每一個攻擊者已有的進展的帕鬆密度乘以他可以從那一點能夠追上來的機率：
 
 ![](images/eq3.png).   
 
@@ -230,7 +230,7 @@ double AttackerSuccessProbability(double q, int z)
 
 Running some results, we can see the probability drop off exponentially with 'z'.
 
-獲取部分結果，我們可以看到概率隨著 'z' 的增加指數級下降：
+獲取部分結果，我們可以看到機率隨著 'z' 的增加指數級下降：
 
 ```
    q=0.1
