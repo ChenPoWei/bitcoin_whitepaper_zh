@@ -173,7 +173,7 @@ p = 誠實節點找到下一個區塊的概率.
 q = 攻擊者找到下一個區塊的概率.   
 q ~z~ = 攻擊者落後 $z$ 個區塊卻依然能夠趕上的概率.   
 
-![](images/eq1.png)
+![](images/eq1.png).   
 $$
 \large q_z = \begin{Bmatrix}
 				1 & \textit{if}\; p \leq q\\
