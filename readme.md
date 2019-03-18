@@ -1,5 +1,6 @@
 # 比特幣：一種點對點的電子現金系統
 ![](https://img.shields.io/badge/%E7%B0%A1%E4%B8%AD%E7%BF%BB%E8%AD%AF-%E6%9D%8E%E7%AC%91%E4%BE%86-lightgrey.svg)
+![](https://img.shields.io/badge/%E7%B9%81%E4%B8%AD%E7%BF%BB%E8%AD%AF-Chen%20Po%20Wei-blue.svg)
 
 ​作者：中本聰 satoshin@gmx.com www.bitcoin.org 2008.10.31.   
 
