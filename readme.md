@@ -220,6 +220,10 @@ The race between the honest chain and an attacker chain can be characterized as 
 
 The probability of an attacker catching up from a given deficit is analogous to a Gambler's Ruin problem. Suppose a gambler with unlimited credit starts at a deficit and plays potentially an infinite number of trials to try to reach breakeven. We can calculate the probability he ever reaches breakeven, or that an attacker ever catches up with the honest chain, as follows[^8]:
 
+p = probability an honest node finds the next block   
+q = probability the attacker finds the next block   
+q <sub>z</sub> = probability the attacker will ever catch up from z blocks behind   
+
 攻擊者能夠從落後局面追平的機率類似於賭徒破產問題。假設，一個拿著無限籌碼的賭徒，從虧空開始，允許他賭無限次，目標是填補上已有的虧空。我們能算出他最終能填補虧空的機率，也就是攻擊者能夠趕上誠實鏈的機率[^8]，如下：
 
 p = 誠實節點找到下一個區塊的機率.   
