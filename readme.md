@@ -52,7 +52,7 @@ We need a way for the payee to know that the previous owners did not sign any ea
 
 The solution we propose begins with a timestamp server. A timestamp server works by taking a hash of a block of items to be timestamped and widely publishing the hash, such as in a newspaper or Usenet post[^2] [^3] [^4] [^5]. The timestamp proves that the data must have existed at the time, obviously, in order to get into the hash. Each timestamp includes the previous timestamp in its hash, forming a chain, with each additional timestamp reinforcing the ones before it.
 
-本解決方案起步於一種時間戳伺服器。時間戳伺服器是這樣工作的：為一組（block）記錄（items）的雜湊打上時間戳，而後把雜湊廣播出去，就好像一份報紙所做的那樣，或者像是在新聞組（Usenet）裡的一個帖子那樣[^2] [^3] [^4] [^5]。顯然，時間戳能夠證明那資料在那個時間點之前已然存在，否則那雜湊也就無法生成。每個時間戳在其雜湊中包含著之前的時間戳，因此構成了一個鏈；每一個新的時間戳被新增到之前的時間戳之後。
+本解決方案起步於一種時間戳伺服器。時間戳伺服器是這樣工作的：為一組（block）記錄（items）的雜湊打上時間戳，而後把雜湊廣播出去，就好像一份報紙所做的那樣，或者像是在新聞組（Usenet）裡的一個帖子那樣[^2] [^3] [^4] [^5]。顯然，時間戳能夠證明那資料在那個時間點之前已然存在，否則那雜湊也就無法生成。每個時間戳在其雜湊中包含著之前的時間戳，因此構成了一個鏈，且每個新的時間戳都為其之前的所有時間戳提供了強化。
 
 ![](images/timestamp-server.png)
 
@@ -62,13 +62,13 @@ The solution we propose begins with a timestamp server. A timestamp server works
 
 To implement a distributed timestamp server on a peer-to-peer basis, we will need to use a proof-of-work system similar to Adam Back's Hashcash[^6], rather than newspaper or Usenet posts. The proof-of-work involves scanning for a value that when hashed, such as with SHA-256, the hash begins with a number of zero bits. The average work required is exponential in the number of zero bits required and can be verified by executing a single hash.
 
-為了實現一個基於點對點的分散式時間戳伺服器，我們需要使用類似亞當·伯克的雜湊現金[^6]那樣的一個工作量證明系統，而不是報紙或者新聞組帖子那樣的東西。所謂的工作量證明，就是去尋找一個數值；這個數值要滿足以下條件：為它提取雜湊數值之後 —— 例如使用 SHA-256 計算雜湊數值 —— 這個雜湊數值必須以一定數量的 0 開頭。每增加一個 0 的要求，將使得工作量指數級增加，並且，這個工作量的驗證卻只需通過計算一個雜湊。
+為了實現一個基於點對點的分散式時間戳伺服器，我們需要使用類似亞當·伯克(Adam Back)的雜湊現金[^6]那樣的一個工作量證明系統，而不是報紙或者新聞組帖子那樣的東西。所謂的工作量證明，就是去尋找一個數值；這個數值要滿足以下條件：為它提取雜湊數值之後 —— 例如使用 SHA-256 計算雜湊數值 —— 這個雜湊數值必須以一定數量的 0 開頭。每增加一個 0 的要求，將使得需要的工作量以指數級增加，並且，這個工作量的驗證卻只需通過計算一個雜湊。
 
 -----
 
 For our timestamp network, we implement the proof-of-work by incrementing a nonce in the block until a value is found that gives the block's hash the required zero bits. Once the CPU effort has been expended to make it satisfy the proof-of-work, the block cannot be changed without redoing the work. As later blocks are chained after it, the work to change the block would include redoing all the blocks after it.
 
-在我們的時間戳網路中，我們是這樣實現工作量證明的：不斷在區塊之中增加一個隨機數（Nonce），直到一個滿足條件的數值被找到；這個條件就是，這個區塊的雜湊以指定數量的 0 開頭。一旦 CPU 的耗費運算能力所獲的的結果滿足工作量證明，那麼這個區塊將不再能被更改，除非重新完成之前的所有工作量。隨著新的區塊不斷被新增進來，改變當前區塊即意味著說要重新完成所有其後區塊的工作。
+在我們的時間戳網路中，我們是這樣實現工作量證明的：不斷提升在區塊之中一個隨機數（Nonce）的值，直到一個滿足條件的數值被找到；這個條件就是，這個區塊的雜湊以指定數量的 0 開頭。一旦 CPU 耗費運算能力所獲得的結果滿足工作量證明，那麼這個區塊將不能再被更改，除非重新付出之前的所有工作量。隨著新的區塊不斷被新增進來，改變某個區塊即意味著必須重新付出其後所有區塊乘載的全部工作量。
 
 ![](images/proof-of-work.png)
 
@@ -76,13 +76,13 @@ For our timestamp network, we implement the proof-of-work by incrementing a nonc
 
 The proof-of-work also solves the problem of determining representation in majority decision making. If the majority were based on one-IP-address-one-vote, it could be subverted by anyone able to allocate many IPs. Proof-of-work is essentially one-CPU-one-vote. The majority decision is represented by the longest chain, which has the greatest proof-of-work effort invested in it. If a majority of CPU power is controlled by honest nodes, the honest chain will grow the fastest and outpace any competing chains. To modify a past block, an attacker would have to redo the proof-of-work of the block and all blocks after it and then catch up with and surpass the work of the honest nodes. We will show later that the probability of a slower attacker catching up diminishes exponentially as subsequent blocks are added.
 
-工作量證明同時解決了如何決定誰能代表大多數做決定的問題。如果所謂的“大多數”是基於“一個IP地址一票”的方式決定的話，那麼任何一個可以搞定很多 IP 地址的人就可以被認為是“大多數”。工作量證明本質上來看，是“一個CPU一票”。所謂的“大多數決定”是由最長鏈所代表的，因為被投入最多工作的鏈就是它。如果大多數 CPU 運算能力被誠實的節點所控制，那麼誠實鏈成長最為迅速，其速度會遠超其他競爭鏈。為了更改一個已經產生的區塊，攻擊者將不得不重新完成那個區塊以及所有其後區塊的的工作量證明，而後還要追上並超過誠實節點的工作。後文展示為什麼一個被拖延了的攻擊者能夠追上的可能性將隨著區塊的不斷增加而指數級降低。
+工作量證明同時也解決了如何決定誰能代表大多數做決定的問題。如果所謂的「大多數」是基於「一個IP地址一票」的方式決定的話，那麼任何一個可以搞定很多 IP 地址的人就可以被認為是「大多數」。工作量證明本質上來看，是「一個CPU一票」。所謂的「多數決」是由最長鏈所代表的，因為被投入最多工作量的鏈就是它。如果大多數 CPU 運算能力被誠實的節點所控制，那麼誠實鏈將成長最為迅速，其速度會遠超過其他競爭鏈。為了更改一個已經產生的區塊，攻擊者將不得不重新完成那個區塊以及所有其後區塊的的工作量證明，而後還要追上並超過誠實節點的工作。後文將展示為什麼一個緩慢的攻擊者能夠追上的可能性將隨著區塊的不斷增加而指數級降低。
 
 -----
 
 To compensate for increasing hardware speed and varying interest in running nodes over time, the proof-of-work difficulty is determined by a moving average targeting an average number of blocks per hour. If they're generated too fast, the difficulty increases.
 
-為了應對硬體運算能力綜合的不斷增加，以及隨著時間推進可能產生的節點參與數量變化，工作量證明難度由此決定：基於平均每小時產生的區塊數量的一個移動平均值。如果區塊生成得過快，那麼難度將會增加。
+為了應對硬體運算能力的不斷增加，以及隨著時間推進可能產生的節點參與數量變化，工作量證明難度由此決定：基於每小時產生的區塊數量的移動平均值調整。如果區塊生成得過快，那麼難度將會增加。
 
 -----
 
