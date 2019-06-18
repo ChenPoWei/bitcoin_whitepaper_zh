@@ -192,7 +192,7 @@ It should be noted that fan-out, where a transaction depends on several transact
 
 The traditional banking model achieves a level of privacy by limiting access to information to the parties involved and the trusted third party. The necessity to announce all transactions publicly precludes this method, but privacy can still be maintained by breaking the flow of information in another place: by keeping public keys anonymous. The public can see that someone is sending an amount to someone else, but without information linking the transaction to anyone. This is similar to the level of information released by stock exchanges, where the time and size of individual trades, the "tape", is made public, but without telling who the parties were.
 
-傳統的銀行模型通過限制他人獲取交易者和可信第三方的資訊而達成一定程度的隱私保護。出於對將所有交易記錄公開的需求否決了這種方法。但是，維持隱私可通過於另一處的切斷資訊流來實現——公鑰匿名。公眾可以看到某某向某某轉賬了一定的金額，但是，沒有任何資訊指向某個確定的人。這種水平的資訊釋出有點像股市交易，只有時間和各個交易的金額被公佈，但是，沒有人知道交易雙方都是誰。
+傳統的銀行模型達成一定程度隱私保護的方式為：通過限制外人獲取交易者和可信第三方的資訊。出於對將所有交易記錄公開的需求否決了這種方法。但是，維持隱私可通過於另一處的切斷資訊流來實現 —— 公鑰匿名。公眾可以看到某某向某某轉賬了一定的金額，但是，沒有任何資訊將交易指向某個確定的人。這種資訊的揭露程度有點像股市交易，只有時間和各個交易的金額被公佈，但是，沒有人知道交易雙方都是誰。
 
 ![](images/privacy.png)
 
@@ -200,7 +200,7 @@ The traditional banking model achieves a level of privacy by limiting access to 
 
 As an additional firewall, a new key pair should be used for each transaction to keep them from being linked to a common owner. Some linking is still unavoidable with multi-input transactions, which necessarily reveal that their inputs were owned by the same owner. The risk is that if the owner of a key is revealed, linking could reveal other transactions that belonged to the same owner.
 
-還有另外一層防火牆。交易者應該針對每一筆交易啟用一對新的公私鑰，以便他人無法將這些交易追溯到同一個所有者身上。有些多輸入的交易依然難免被追溯，因為那些輸入必然會被識別出來自於同一個所有者。危險在於，如果一個公鑰的所有者被曝光之後，與之相關的所有其他交易都會被曝光。
+還有另外一層防火牆：交易者應該針對每一筆新交易啟用一對新的公私鑰，以防止他人將這些交易連結到同一個所有者身上。有些多個輸入的交易依然難免被追溯，因為那些輸入必然會被識別出來自於同一個所有者。危險在於，如果一個公鑰的所有者被曝光之後，與之相關的所有其他交易都會被曝光。
 
 -----
 
