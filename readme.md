@@ -144,7 +144,7 @@ The incentive may help encourage nodes to stay honest. If a greedy attacker is a
 
 Once the latest transaction in a coin is buried under enough blocks, the spent transactions before it can be discarded to save disk space. To facilitate this without breaking the block's hash, transactions are hashed in a Merkle Tree[^2][^5][^7], with only the root included in the block's hash. Old blocks can then be compacted by stubbing off branches of the tree. The interior hashes do not need to be stored.
 
-如果一枚硬幣最近發生的交易發生在足夠多的區塊之前，那麼，這筆交易之前該硬幣的花銷交易記錄可以被丟棄 —— 目的是為了節省磁碟空間。為了在不破壞該區塊的雜湊的前提下實現此功能，交易記錄的雜湊將被納入一個 Merkle 樹[^2][^5][^7]之中，而只有樹根被納入該區塊的雜湊之中。通過砍掉樹枝方法，老區塊即可被壓縮。內部的雜湊並不需要被儲存。
+如果一枚代幣的最新交易已經被足夠多的區塊覆蓋，那麼，這枚代幣在這筆交易之前的花費交易記錄可以被丟棄 —— 目的是為了節省磁碟空間。為了在不破壞該區塊的雜湊的前提下實現此功能，交易記錄的雜湊將被納入一個 Merkle 樹[^2][^5][^7]之中，而只有樹根被納入該區塊的雜湊之中。通過砍掉樹枝方法，老區塊即可被壓縮。內部的雜湊並不需要被儲存。
 
 ![](images/reclaiming-disk-space.png)
 
@@ -160,7 +160,7 @@ A block header with no transactions would be about 80 bytes. If we suppose block
 
 It is possible to verify payments without running a full network node. A user only needs to keep a copy of the block headers of the longest proof-of-work chain, which he can get by querying network nodes until he's convinced he has the longest chain, and obtain the Merkle branch linking the transaction to the block it's timestamped in. He can't check the transaction for himself, but by linking it to a place in the chain, he can see that a network node has accepted it, and blocks added after it further confirm the network has accepted it.
 
-即便不用執行一個完整網路節點也有可能確認支付。使用者只需要有一份擁有工作量證明的最長鏈的區塊頭拷貝 —— 他可以通過查詢線上節點確認自己擁有的確實來自最長鏈 —— 而後獲取 Merkle 樹的樹枝節點，進而連線到這個區塊被打上時間戳時的交易。使用者並不能自己檢查交易，但，通過連線到鏈上的某個地方，他可以看到某個網路節點已經接受了這個交易，而此後加進來的區塊進一步確認了網路已經接受了此筆交易。
+即便不用執行一個完整網路節點也有可能確認支付。使用者只需要有一份工作量證明的最長鏈的區塊頭複本 —— 他可以通過查詢線上節點確認自己擁有的複本確實來自最長鏈 —— 而後獲取 Merkle 樹的樹枝節點，進而連線到這個區塊被打上時間戳時的交易。使用者並不能自己檢查交易，但，通過連結到鏈上的某個地方，他可以看到某個網路節點已經接受了這筆交易，而此後加進來的區塊進一步確認了網路已經接受了此筆交易。
 
 ![](images/simplified-payment-verification.png)
 
@@ -168,7 +168,7 @@ It is possible to verify payments without running a full network node. A user on
 
 As such, the verification is reliable as long as honest nodes control the network, but is more vulnerable if the network is overpowered by an attacker. While network nodes can verify transactions for themselves, the simplified method can be fooled by an attacker's fabricated transactions for as long as the attacker can continue to overpower the network. One strategy to protect against this would be to accept alerts from network nodes when they detect an invalid block, prompting the user's software to download the full block and alerted transactions to confirm the inconsistency. Businesses that receive frequent payments will probably still want to run their own nodes for more independent security and quicker verification.
 
-只要誠實節點依然在掌控網路，如此這般，驗證即為可靠的。然而，如果網路被攻擊者所控制的時候，驗證就沒那麼可靠了。儘管網路節點可以自己驗證交易記錄，但是，只要攻擊者能夠繼續控制網路的話，那麼簡化版驗證方式可能會被攻擊者偽造的交易記錄所欺騙。應對策略之一是，客戶端軟體要接受來自網路節點的警告。當網路節點發現無效區塊的時候，即發出警報，在使用者的軟體上彈出通知，告知使用者下載完整區塊，警告使用者確認交易一致性。那些有高頻收付發生的商家應該仍然希望執行屬於自己的完整節點，以此保證更獨立的安全性和更快的交易確認。
+如此一來，只要誠實節點依然掌控整個網路，驗證即為可靠的。然而，如果網路被攻擊者所控制的時候，驗證就沒那麼可靠了。儘管網路節點可以自己驗證交易記錄，但是，只要攻擊者能夠繼續控制網路的話，那麼簡化版驗證方式可能會被攻擊者偽造的交易記錄所欺騙。應對策略之一是，客戶端軟體要接受來自網路節點的警告。當網路節點發現無效區塊的時候，即發出警報，在使用者的軟體上彈出通知，告知使用者下載完整區塊，警告使用者確認交易一致性。那些有高頻收付發生的商家應該會希望執行屬於自己的完整節點，以此保證更獨立的安全性和更快的交易確認。
 
 -----
 
@@ -176,7 +176,7 @@ As such, the verification is reliable as long as honest nodes control the networ
 
 Although it would be possible to handle coins individually, it would be unwieldy to make a separate transaction for every cent in a transfer. To allow value to be split and combined, transactions contain multiple inputs and outputs. Normally there will be either a single input from a larger previous transaction or multiple inputs combining smaller amounts, and at most two outputs: one for the payment, and one returning the change, if any, back to the sender.
 
-儘管逐個地處理硬幣是可能的，但為每分錢設定一個單獨的記錄是很笨拙的。為了允許價值的分割與合併，交易記錄包含多個輸入和輸出。一般情況下，要麼是一個單獨的來自於一個相對大的之前的交易的輸入，要麼是很多個輸入來自於更小金額的組合；與此同時，最多有兩個輸出：一個是支付（指向收款方），如果必要的話，另外一個是找零（指向發款方）。
+儘管逐個地處理硬幣是可能的，但為每分錢設定一個單獨的交易是很笨拙的。為了允許價值的分割與合併，交易記錄包含多個輸入和輸出。一般情況下，要麼是以過去一筆金額較大的交易當作單一輸入，要麼是以多個小額交易組合輸入；然而，最多只會有兩個輸出：一個是支付（指向收款方），以及，如果必要的話，一個是找零（指向發款方）。
 
 ![](images/combining-splitting-value.png)
 
@@ -184,7 +184,7 @@ Although it would be possible to handle coins individually, it would be unwieldy
 
 It should be noted that fan-out, where a transaction depends on several transactions, and those transactions depend on many more, is not a problem here. There is never the need to extract a complete standalone copy of a transaction's history.
 
-值得注意的是，“扇出”在這裡並不是問題 —— 所謂“扇出”，就是指一筆交易依賴於數筆交易，且這些交易又依賴於更多筆交易。從來就沒有必要去提取任何一筆交易的完整獨立的歷史拷貝。
+值得注意的是，“扇出”在這裡並不是問題 —— 所謂“扇出”，就是指一筆交易依賴於數筆交易，且這些交易又依賴於更多筆交易。從來就沒有必要去提取任何一筆交易的完整獨立的歷史複本。
 
 -----
 
