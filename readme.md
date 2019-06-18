@@ -100,23 +100,23 @@ The steps to run the network are as follows:
 執行網路的步驟如下：
 
 > 1. 所有新的交易向所有節點廣播；
-> 2. 每個節點將新交易打包到一個區塊；
+> 2. 每個節點將新交易集合成一個區塊；
 > 3. 每個節點開始為此區塊找一個具備難度的工作量證明；
 > 4. 當某個區塊找到其工作量證明，它就要將此區塊廣播給所有節點；
-> 5. 眾多其他節點當且只當以下條件滿足才會接受這個區塊：其中所有的交易都是有效的，且未被雙重支付；
-> 6. 眾多節點向網路表示自己接受這個區塊的方法是，在建立下一個區塊的時候，把被接受區塊的雜湊當作新區塊之前的雜湊。
+> 5. 眾多其他節點唯有當以下條件滿足才會接受這個區塊：其中所有的交易都是有效的，且未被雙重支付；
+> 6. 眾多節點向網路表示自己接受這個區塊的方法是：將此區塊當作下一個區塊的基底，以此區塊的雜湊值繼續計算下個區塊。
 
 -----
 
 Nodes always consider the longest chain to be the correct one and will keep working on extending it. If two nodes broadcast different versions of the next block simultaneously, some nodes may receive one or the other first. In that case, they work on the first one they received, but save the other branch in case it becomes longer. The tie will be broken when the next proof-of-work is found and one branch becomes longer; the nodes that were working on the other branch will then switch to the longer one.
 
-節點始終認為最長鏈是正確的那個，且會不斷向其新增新資料。若是有兩個節點同時向網路廣播了兩個不同版本的“下一個區塊”，有些節點會先接收到其中一個，而另外一些節點會先接收到另外一個。這種情況下，節點將在它們先接收到的那個區塊上繼續工作，但也會把另外一個分支儲存下來，以防後者成為最長鏈。當下一個工作量證明被找到，而其中的一個分支成為更長的鏈之後，這個暫時的分歧會被打消，在另外一個分支上工作的節點們會切換到更長的鏈上。
+節點始終認為最長鏈是正確的那個，且會不斷向其附加新資料。若是有兩個節點同時向網路廣播了兩個不同版本的“下一個區塊”，有些節點會先接收到其中一個，而另外一些節點會先接收到另外一個。這種情況下，節點將在它們先接收到的那個區塊上繼續工作，但也會把另外一個分支儲存下來，以防後者成為最長鏈。當下一個工作量證明被找到，而其中的一個分支成為更長的鏈之後，這個暫時的分歧會被打消，在另外一個分支上工作的節點們會切換到更長的鏈上。
 
 -----
 
 New transaction broadcasts do not necessarily need to reach all nodes. As long as they reach many nodes, they will get into a block before long. Block broadcasts are also tolerant of dropped messages. If a node does not receive a block, it will request it when it receives the next block and realizes it missed one.
 
-新的交易不見得一定要廣播到達所有的節點。只要到達足夠多的節點，那麼沒多久這些交易就會被打包進一個區塊。區塊廣播也容許一些訊息被丟棄。如果一個節點並未接收到某個區塊，那麼這個節點會在它接收到下一個區塊的時候意識到自己錯失了之前的區塊，因此會發出補充那個遺失區塊的請求。
+新的交易不見得一定要廣播到達所有的節點。只要到達足夠多的節點，那麼沒多久這些交易就會被打包進一個區塊。區塊廣播也對訊息的丟失有容錯能力。如果一個節點並未接收到某個區塊，那麼這個節點會在它接收到下一個區塊的時候意識到自己錯失了之前的區塊，因此會發出補充那個遺失區塊的請求。
 
 -----
 
@@ -124,19 +124,19 @@ New transaction broadcasts do not necessarily need to reach all nodes. As long a
 
 By convention, the first transaction in a block is a special transaction that starts a new coin owned by the creator of the block. This adds an incentive for nodes to support the network, and provides a way to initially distribute coins into circulation, since there is no central authority to issue them. The steady addition of a constant of amount of new coins is analogous to gold miners expending resources to add gold to circulation. In our case, it is CPU time and electricity that is expended.
 
-按照約定，每個區塊的第一筆交易是一個特殊的交易，它會生成一枚新的硬幣，所屬權是這個區塊的生成者。這麼做，使得節點支援網路有所獎勵，也提供了一種將硬幣發行到流通之中的方式 —— 在這個系統中，反正也沒有一箇中心化的權威方去發行那些硬幣。如此這般穩定地增加一定數量的新硬幣進入流通，就好像是黃金開採者不斷耗用他們的資源往流通之中增加黃金一樣。在我們的系統中，被耗用的資源是 CPU 工作時間和它們所用的電力。
+按照約定，每個區塊的第一筆交易是一個特殊的交易，它會生成一枚新的代幣，所屬權是這個區塊的生成者。這麼做，使得節點運行網路能有所獎勵，也提供了一種將代幣發行到流通之中的方式 —— 需要這種方式，是因為這個系統中並沒有一個中心化機構負責發行代幣。如此這般穩定地增加一定數量的新代幣進入流通，就好像是黃金開採者不斷耗用他們的資源往流通之中增加黃金一樣。在我們的系統中，被耗用的資源是 CPU 工作時間和它們所用的電力。
 
 -----
 
 The incentive can also be funded with transaction fees. If the output value of a transaction is less than its input value, the difference is a transaction fee that is added to the incentive value of the block containing the transaction. Once a predetermined number of coins have entered circulation, the incentive can transition entirely to transaction fees and be completely inflation free.
 
-獎勵還可以來自交易費用。如果一筆交易的輸出值小於它的輸入值，那麼其中的差額就是交易費；而該交易費就是用來獎勵節點把該交易打包進此區塊的。一旦既定數量的硬幣已經進入流通，那麼獎勵將全面交由交易手續費來完成，且絕對不會有通貨膨脹。
+獎勵還可以來自交易費用。如果一筆交易的輸出值小於它的輸入值，那麼其中的差額就是交易費；而該交易費就是用來獎勵節點把該交易打包進此區塊的。一旦預定義數量的代幣都已經進入流通，那麼獎勵將全面交由交易手續費來完成，且絕對不會有通貨膨脹。
 
 -----
 
 The incentive may help encourage nodes to stay honest. If a greedy attacker is able to assemble more CPU power than all the honest nodes, he would have to choose between using it to defraud people by stealing back his payments, or using it to generate new coins. He ought to find it more profitable to play by the rules, such rules that favour him with more new coins than everyone else combined, than to undermine the system and the validity of his own wealth.
 
-獎勵機制也可能會鼓勵節點保持誠實。如果一個貪婪的攻擊者能夠網羅比所有誠實節點都更多的 CPU 運算能力，他必須做出一個選擇：是用這些運算能力通過把自己花出去的錢偷回來去欺騙別人呢？還是用這些運算能力去生成新的硬幣？他應該能夠發現按照規則行事是更划算的，當前規則使得他能夠獲得比所有其他人加起來都更多的硬幣，這顯然比暗中摧毀系統並使自己的財富化為虛無更划算。
+獎勵機制也可能會鼓勵節點保持誠實。如果一個貪婪的攻擊者能夠網羅比所有誠實節點都更多的 CPU 運算能力，他必須做出一個選擇：是用這些運算能力來把自己花出去的錢偷回來去欺騙別人呢？還是用這些運算能力去生成新的代幣？他應該能夠發現按照規則行事是更划算的，當前規則使得他能夠獲得比所有其他人加起來都更多的代幣，這顯然比暗中摧毀系統並使自己的財富化為虛無更划算。
 
 -----
 
