@@ -208,7 +208,7 @@ As an additional firewall, a new key pair should be used for each transaction to
 
 We consider the scenario of an attacker trying to generate an alternate chain faster than the honest chain. Even if this is accomplished, it does not throw the system open to arbitrary changes, such as creating value out of thin air or taking money that never belonged to the attacker. Nodes are not going to accept an invalid transaction as payment, and honest nodes will never accept a block containing them. An attacker can only try to change one of his own transactions to take back money he recently spent.
 
-假設一個場景，某個攻擊者正在試圖生成一個比誠實鏈更快的替代鏈。就算他成功了，也不會使當前系統置於模稜兩可的尷尬境地，即，他不可能憑空製造出價值，也無法獲取從未屬於他的錢。網路節點不會把一筆無效交易當作支付，而誠實節點也永遠不會接受一個包含這種支付的區塊。攻擊者最多隻能修改屬於他自己的交易，進而試圖取回他已經花出去的錢。
+假設一個場景，某個攻擊者正在試圖生成一個比誠實鏈更快的替代鏈。就算他成功了，也不會使當前系統置於模稜兩可的尷尬境地，即，他不可能憑空製造出價值，也無法獲取從未屬於他的錢。網路節點不會把一筆無效交易當作支付，而誠實節點也永遠不會接受一個包含這種支付的區塊。攻擊者最多只能修改屬於他自己的交易，進而試圖取回他已經花出去的錢。
 
 -----
 
@@ -236,7 +236,7 @@ q <sub>z</sub> = 攻擊者落後 'z' 個區塊卻依然能夠趕上的機率.
 
 Given our assumption that 'p > q​', the probability drops exponentially as the number of blocks the attacker has to catch up with increases. With the odds against him, if he doesn't make a lucky lunge forward early on, his chances become vanishingly small as he falls further behind.
 
-既然我們已經假定 'p > q', 既然攻擊者需要趕超的區塊數量越來越多，那麼其成功機率就會指數級下降。於贏面不利時，如果攻擊者沒有在起初就能幸運地做一個前移步刺，那麼他的勝率將在他進一步落後的同時消弭殆盡。
+既然我們已經假定 'p > q', 當攻擊者需要趕超的區塊數量越來越多，那麼其成功機率就會指數級下降。於贏面不利時，如果攻擊者沒有在起初就能幸運地做一個前移步刺，那麼他的勝率將在他進一步落後的同時消弭殆盡。
 
 -----
 
@@ -248,13 +248,13 @@ We now consider how long the recipient of a new transaction needs to wait before
 
 The receiver generates a new key pair and gives the public key to the sender shortly before signing. This prevents the sender from preparing a chain of blocks ahead of time by working on it continuously until he is lucky enough to get far enough ahead, then executing the transaction at that moment. Once the transaction is sent, the dishonest sender starts working in secret on a parallel chain containing an alternate version of his transaction.
 
-收款人生成了一對新的公私鑰，而後在簽署之前不久將公鑰告知發款人。這樣可以防止一種情形：發款人提前通過連續運算去準備一條鏈上的區塊，並且只要有足夠的運氣就會足夠領先，直到那時再執行交易。一旦款項已被髮出，那個不誠實的發款人開始祕密地在另一條平行鏈上開工，試圖在其中加入一個反向版本的交易。
+收款人生成了一對新的公私鑰，並在簽名前的一小段時間才將公鑰告知發款人。這樣可以防止一種情形：發款人提前通過不斷的運算去預先準備一連串的區塊，並且只要有足夠的運氣就能擁有足夠的領先，直到那時再執行交易。一旦款項已被發出，那個不誠實的發款人開始祕密地在另一條平行鏈上開工，試圖在其中加入一個反向版本的交易。
 
 -----
 
 The recipient waits until the transaction has been added to a block and 'z' blocks have been linked after it. He doesn't know the exact amount of progress the attacker has made, but assuming the honest blocks took the average expected time per block, the attacker's potential progress will be a Poisson distribution with expected value:
 
-收款人等到此筆交易被打包進區塊，並已經有 'z' 個區塊隨後被加入。他並不知道攻擊者的工作進展究竟如何，但是可以假定誠實區塊在每個區塊生成過程中耗費的平均時間；攻擊者的潛在進展符合泊松分佈，其期望值為：
+收款人等到此筆交易被打包進區塊，並已經有 'z' 個區塊被附加在其之後。他並不知道攻擊者的工作進展究竟如何，但是可以假定誠實區塊在每個區塊生成過程中耗費的平均時間；攻擊者的潛在進展符合 Poisson 分佈，其期望值為：
 
 ![](images/eq2.png).   
 
@@ -262,7 +262,7 @@ The recipient waits until the transaction has been added to a block and 'z' bloc
 
 To get the probability the attacker could still catch up now, we multiply the Poisson density for each amount of progress he could have made by the probability he could catch up from that point:
 
-為了算出攻擊者依然可以趕上的機率，我們要把每一個攻擊者已有的進展的帕鬆密度乘以他可以從那一點能夠追上來的機率：
+為了算出攻擊者依然可以趕上的機率，我們要把每一個攻擊者已有的進展的 Poisson 密度乘以他可以從那一點能夠追上來的機率：
 
 ![](images/eq3.png).   
 
