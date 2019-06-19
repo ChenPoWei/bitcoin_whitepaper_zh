@@ -31,7 +31,7 @@ What is needed is an electronic payment system based on cryptographic proof inst
 
 We define an electronic coin as a chain of digital signatures. Each owner transfers the coin to the next by digitally signing a hash of the previous transaction and the public key of the next owner and adding these to the end of the coin. A payee can verify the signatures to verify the chain of ownership.
 
-我們將一枚電子代幣定義為一個數字簽名鏈。一位所有者將一枚代幣交給另一個人的時候，要通過在這個數字簽名鏈的末尾附加上以下數字簽名：上一筆交易的雜湊（hash，音譯，亦翻譯為“雜湊值”），以及新所有者的公鑰。收款人可以通過驗證簽名去驗證數字簽名鏈的所屬權。
+我們將一枚電子硬幣定義為一個數字簽名鏈。一位所有者將一枚硬幣交給另一個人的時候，要通過在這個數字簽名鏈的末尾附加上以下數字簽名：上一筆交易的雜湊（hash，音譯，亦翻譯為“雜湊值”），以及新所有者的公鑰。收款人可以通過驗證簽名去驗證數字簽名鏈的所屬權。
 
 ![](images/transactions.png)
 
@@ -39,7 +39,7 @@ We define an electronic coin as a chain of digital signatures. Each owner transf
 
 The problem of course is the payee can't verify that one of the owners did not double-spend the coin. A common solution is to introduce a trusted central authority, or mint, that checks every transaction for double spending. After each transaction, the coin must be returned to the mint to issue a new coin, and only coins issued directly from the mint are trusted not to be double-spent. The problem with this solution is that the fate of the entire money system depends on the company running the mint, with every transaction having to go through them, just like a bank.
 
-這個路徑的問題在於收款人無法驗證曾經的所有者之中沒有人雙重支付過。常見的解決方案是引入一個可信的中心化權威方，或稱“鑄幣廠”，讓它去檢查每一筆交易是否存在雙重支付。每一次發生交易之後，代幣必須返回到鑄幣廠，鑄幣廠再發行一枚新的代幣。進而，只有鑄幣廠直接發行的代幣才是可信的、未被雙重支付過的。這個解決方案的問題在於，整個貨幣系統的命運被拴在運營鑄幣廠的那個公司（就好像銀行那樣）身上，每一筆交易必須通過它。
+這個路徑的問題在於收款人無法驗證曾經的所有者之中沒有人雙重支付過。常見的解決方案是引入一個可信的中心化權威方，或稱“鑄幣廠”，讓它去檢查每一筆交易是否存在雙重支付。每一次發生交易之後，硬幣必須返回到鑄幣廠，鑄幣廠再發行一枚新的硬幣。進而，只有鑄幣廠直接發行的硬幣才是可信的、未被雙重支付過的。這個解決方案的問題在於，整個貨幣系統的命運被拴在運營鑄幣廠的那個公司（就好像銀行那樣）身上，每一筆交易必須通過它。
 
 -----
 
@@ -125,19 +125,19 @@ New transaction broadcasts do not necessarily need to reach all nodes. As long a
 
 By convention, the first transaction in a block is a special transaction that starts a new coin owned by the creator of the block. This adds an incentive for nodes to support the network, and provides a way to initially distribute coins into circulation, since there is no central authority to issue them. The steady addition of a constant of amount of new coins is analogous to gold miners expending resources to add gold to circulation. In our case, it is CPU time and electricity that is expended.
 
-按照約定，每個區塊的第一筆交易是一個特殊的交易，它會生成一枚新的代幣，所屬權是這個區塊的生成者。這麼做，使得節點運行網路能有所獎勵，也提供了一種將代幣發行到流通之中的方式 —— 需要這種方式，是因為這個系統中並沒有一個中心化機構負責發行代幣。如此這般穩定地增加一定數量的新代幣進入流通，就好像是黃金開採者不斷耗用他們的資源往流通之中增加黃金一樣。在我們的系統中，被耗用的資源是 CPU 工作時間和它們所用的電力。
+按照約定，每個區塊的第一筆交易是一個特殊的交易，它會生成一枚新的硬幣，所屬權是這個區塊的生成者。這麼做，使得節點運行網路能有所獎勵，也提供了一種將硬幣發行到流通之中的方式 —— 需要這種方式，是因為這個系統中並沒有一個中心化機構負責發行硬幣。如此這般穩定地增加一定數量的新硬幣進入流通，就好像是黃金開採者不斷耗用他們的資源往流通之中增加黃金一樣。在我們的系統中，被耗用的資源是 CPU 工作時間和它們所用的電力。
 
 -----
 
 The incentive can also be funded with transaction fees. If the output value of a transaction is less than its input value, the difference is a transaction fee that is added to the incentive value of the block containing the transaction. Once a predetermined number of coins have entered circulation, the incentive can transition entirely to transaction fees and be completely inflation free.
 
-獎勵還可以來自交易費用。如果一筆交易的輸出值小於它的輸入值，那麼其中的差額就是交易費；而該交易費就是用來獎勵節點把該交易打包進此區塊的。一旦預定義數量的代幣都已經進入流通，那麼獎勵將全面交由交易手續費來完成，且絕對不會有通貨膨脹。
+獎勵還可以來自交易費用。如果一筆交易的輸出值小於它的輸入值，那麼其中的差額就是交易費；而該交易費就是用來獎勵節點把該交易打包進此區塊的。一旦預定義數量的硬幣都已經進入流通，那麼獎勵將全面交由交易手續費來完成，且絕對不會有通貨膨脹。
 
 -----
 
 The incentive may help encourage nodes to stay honest. If a greedy attacker is able to assemble more CPU power than all the honest nodes, he would have to choose between using it to defraud people by stealing back his payments, or using it to generate new coins. He ought to find it more profitable to play by the rules, such rules that favour him with more new coins than everyone else combined, than to undermine the system and the validity of his own wealth.
 
-獎勵機制也可能會鼓勵節點保持誠實。如果一個貪婪的攻擊者能夠網羅比所有誠實節點都更多的 CPU 運算能力，他必須做出一個選擇：是用這些運算能力來把自己花出去的錢偷回來去欺騙別人呢？還是用這些運算能力去生成新的代幣？他應該能夠發現按照規則行事是更划算的，當前規則使得他能夠獲得比所有其他人加起來都更多的代幣，這顯然比暗中摧毀系統並使自己的財富化為虛無更划算。
+獎勵機制也可能會鼓勵節點保持誠實。如果一個貪婪的攻擊者能夠網羅比所有誠實節點都更多的 CPU 運算能力，他必須做出一個選擇：是用這些運算能力來把自己花出去的錢偷回來去欺騙別人呢？還是用這些運算能力去生成新的硬幣？他應該能夠發現按照規則行事是更划算的，當前規則使得他能夠獲得比所有其他人加起來都更多的硬幣，這顯然比暗中摧毀系統並使自己的財富化為虛無更划算。
 
 -----
 
@@ -145,7 +145,7 @@ The incentive may help encourage nodes to stay honest. If a greedy attacker is a
 
 Once the latest transaction in a coin is buried under enough blocks, the spent transactions before it can be discarded to save disk space. To facilitate this without breaking the block's hash, transactions are hashed in a Merkle Tree[^2][^5][^7], with only the root included in the block's hash. Old blocks can then be compacted by stubbing off branches of the tree. The interior hashes do not need to be stored.
 
-如果一枚代幣的最新交易已經被足夠多的區塊覆蓋，那麼，這枚代幣在這筆交易之前的花費交易記錄可以被丟棄 —— 目的是為了節省磁碟空間。為了在不破壞該區塊的雜湊的前提下實現此功能，交易記錄的雜湊將被納入一個 Merkle 樹[^2][^5][^7]之中，而只有樹根被納入該區塊的雜湊之中。通過砍掉樹枝方法，老區塊即可被壓縮。內部的雜湊並不需要被儲存。
+如果一枚硬幣的最新交易已經被足夠多的區塊覆蓋，那麼，這枚硬幣在這筆交易之前的花費交易記錄可以被丟棄 —— 目的是為了節省磁碟空間。為了在不破壞該區塊的雜湊的前提下實現此功能，交易記錄的雜湊將被納入一個 Merkle 樹[^2][^5][^7]之中，而只有樹根被納入該區塊的雜湊之中。通過砍掉樹枝方法，老區塊即可被壓縮。內部的雜湊並不需要被儲存。
 
 ![](images/reclaiming-disk-space.png)
 
@@ -177,7 +177,7 @@ As such, the verification is reliable as long as honest nodes control the networ
 
 Although it would be possible to handle coins individually, it would be unwieldy to make a separate transaction for every cent in a transfer. To allow value to be split and combined, transactions contain multiple inputs and outputs. Normally there will be either a single input from a larger previous transaction or multiple inputs combining smaller amounts, and at most two outputs: one for the payment, and one returning the change, if any, back to the sender.
 
-儘管逐個地處理代幣是可能的，但為每分錢設定一個單獨的交易是很笨拙的。為了允許價值的分割與合併，交易記錄包含多個輸入和輸出。一般情況下，要麼是以過去一筆金額較大的交易當作單一輸入，要麼是以多個小額交易組合輸入；然而，最多只會有兩個輸出：一個是支付（指向收款方），以及，如果必要的話，一個是找零（指向發款方）。
+儘管逐個地處理硬幣是可能的，但為每分錢設定一個單獨的交易是很笨拙的。為了允許價值的分割與合併，交易記錄包含多個輸入和輸出。一般情況下，要麼是以過去一筆金額較大的交易當作單一輸入，要麼是以多個小額交易組合輸入；然而，最多只會有兩個輸出：一個是支付（指向收款方），以及，如果必要的話，一個是找零（指向發款方）。
 
 ![](images/combining-splitting-value.png)
 
@@ -354,7 +354,7 @@ Solving for P less than 0.1%...
 
 We have proposed a system for electronic transactions without relying on trust. We started with the usual framework of coins made from digital signatures, which provides strong control of ownership, but is incomplete without a way to prevent double-spending. To solve this, we proposed a peer-to-peer network using proof-of-work to record a public history of transactions that quickly becomes computationally impractical for an attacker to change if honest nodes control a majority of CPU power. The network is robust in its unstructured simplicity. Nodes work all at once with little coordination. They do not need to be identified, since messages are not routed to any particular place and only need to be delivered on a best effort basis. Nodes can leave and rejoin the network at will, accepting the proof-of-work chain as proof of what happened while they were gone. They vote with their CPU power, expressing their acceptance of valid blocks by working on extending them and rejecting invalid blocks by refusing to work on them. Any needed rules and incentives can be enforced with this consensus mechanism.
 
-我們提出了一個不必依賴信任的電子交易系統；起點是一個普通的使用數字簽名的代幣框架開始，雖然它提供了健壯的所有權控制，卻無法避免雙重支付。為了解決這個問題，我們提出一個使用工作量證明機制的點對點網路去記錄一個公開的交易記錄歷史，只要誠實節點能夠控制大多數 CPU 運算能力，那麼攻擊者僅從運算能力方面就不可能成功篡改系統。這個網路的健壯在於它的無結構的簡單。節點們可以在很少協同的情況下瞬間同時工作。它們甚至不需要被辨認，因為訊息的路徑並非取決於特定的終點，訊息只需要被以最大努力為基本去傳播即可。節點來去自由，重新加入時，只需要接受工作量證明鏈，作為它們離線之時所發生之一切的證明。它們通過它們的 CPU 運算能力投票，通過不斷為鏈新增新的有效區塊、拒絕無效區塊，去表示它們對有效交易的接受與否。任何必要的規則和獎勵都可以通過這個共識機制來強制實施。
+我們提出了一個不必依賴信任的電子交易系統；起點是一個普通的使用數字簽名的硬幣框架開始，雖然它提供了健壯的所有權控制，卻無法避免雙重支付。為了解決這個問題，我們提出一個使用工作量證明機制的點對點網路去記錄一個公開的交易記錄歷史，只要誠實節點能夠控制大多數 CPU 運算能力，那麼攻擊者僅從運算能力方面就不可能成功篡改系統。這個網路的健壯在於它的無結構的簡單。節點們可以在很少協同的情況下瞬間同時工作。它們甚至不需要被辨認，因為訊息的路徑並非取決於特定的終點，訊息只需要被以最大努力為基本去傳播即可。節點來去自由，重新加入時，只需要接受工作量證明鏈，作為它們離線之時所發生之一切的證明。它們通過它們的 CPU 運算能力投票，通過不斷為鏈新增新的有效區塊、拒絕無效區塊，去表示它們對有效交易的接受與否。任何必要的規則和獎勵都可以通過這個共識機制來強制實施。
 
 -----
 
